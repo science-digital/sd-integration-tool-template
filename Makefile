@@ -13,13 +13,11 @@ DOCKER_USER="$(shell id -u):$(shell id -g)"
 DOCKER_DOMAIN=$(shell echo ${PROVIDER_NAME} | sed -E 's/[-:]/_/g')
 DOCKER_NAME=$(shell echo ${SERVICE_NAME} | sed -E 's/-/_/g')
 DOCKER_VERSION=${GIT_COMMIT}
-DOCKER_TAG=${DOCKER_NAME}:${DOCKER_VERSION}
-DOCKER_TAG_LOCAL=${DOCKER_NAME}:latest
+TARGET_ARCH := $(shell uname -m)
+DEPLOY_ARCH=amd64
 
 PROJECT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-TARGET_PLATFORM := linux/$(shell go env GOARCH)
 SERVICE_URL=http://localhost:8099
-
 
 run:
 	env VERSION=$(VERSION) \
@@ -39,42 +37,44 @@ submit-agent-query:
 install:
 	pip install -r requirements.txt
 
-docker-run: #docker-build
+docker-run: docker-build
 	docker run -it \
-		-p 8090:8090 \
+		-p 8080:8080 \
 		--user ${DOCKER_USER} \
-		--platform=${TARGET_PLATFORM} \
+		--platform=linux/${TARGET_ARCH} \
 		--rm \
-		${DOCKER_TAG_LOCAL}
+		${DOCKER_NAME}-${TARGET_ARCH}
 
 docker-debug: #docker-build
 	docker run -it \
-		-p 8090:8090 \
+		-p 8888:8080 \
 		--user ${DOCKER_USER} \
-		--platform=${TARGET_PLATFORM} \
+		--platform=linux/${TARGET_ARCH} \
 		--entrypoint bash \
-		${DOCKER_TAG_LOCAL}
+		${DOCKER_NAME}-${TARGET_ARCH}
 
 docker-build:
-	@echo "Building docker image '${DOCKER_NAME}' for '${TARGET_PLATFORM}'"
+	$(eval tag:=${DOCKER_NAME}-${TARGET_ARCH})
+	@echo "Building docker image '${tag}'"
 	docker build \
-		-t ${DOCKER_TAG_LOCAL} \
-		--platform=${TARGET_PLATFORM} \
+		-t ${tag} \
+		--platform=linux/${TARGET_ARCH} \
 		--build-arg VERSION=${VERSION} \
 		-f ${PROJECT_DIR}/Dockerfile \
 		${PROJECT_DIR} ${DOCKER_BILD_ARGS}
-	@echo "\nFinished building docker image ${DOCKER_NAME}\n"
+	@echo "\nFinished building docker image ${tag}\n"
 
 SERVICE_IMG := ${DOCKER_DEPLOY}
 PUSH_FROM := ""
 
 service-register: tool-register docker-publish
+	$(eval tag:=${DOCKER_NAME}-${DEPLOY_ARCH})
 	$(eval account_id=$(shell ivcap context get account-id))
 	@if [[ ${account_id} != urn:ivcap:account:* ]]; then echo "ERROR: No IVCAP account found"; exit -1; fi
 	@$(eval service_id:=urn:ivcap:service:$(shell python3 -c 'import uuid; print(uuid.uuid5(uuid.NAMESPACE_DNS, \
         "${SERVICE_NAME}" + "${account_id}"));'))
-	@$(eval image:=$(shell ivcap package list ${DOCKER_TAG}))
-	@if [[ -z "${image}" ]]; then echo "ERROR: No uploaded docker image '${DOCKER_TAG}' found"; exit -1; fi
+	@$(eval image:=$(shell ivcap package list ${tag}))
+	@if [[ -z "${image}" ]]; then echo "ERROR: No uploaded docker image '${tag}' found"; exit -1; fi
 	@echo "ServiceID: ${service_id}"
 	cat ${PROJECT_DIR}/${IVCAP_SERVICE_FILE} \
 	| sed 's|#DOCKER_IMG#|${image}|' \
@@ -86,30 +86,32 @@ tool-register: docker-publish
 	@if [[ ${account_id} != urn:ivcap:account:* ]]; then echo "ERROR: No IVCAP account found"; exit -1; fi
 	$(eval service_id:=urn:ivcap:service:$(shell python3 -c 'import uuid; print(uuid.uuid5(uuid.NAMESPACE_DNS, \
         "${SERVICE_NAME}" + "${account_id}"));'))
-	$(eval tool_id:=$(shell docker run --rm ${DOCKER_NAME} --print-tool-description  2>/dev/null | grep "\"id\":" | cut -d\" -f 4 ))
+	$(eval tool_id:=$(shell docker run --rm ${DOCKER_NAME}-${DEPLOY_ARCH} --print-tool-description  2>/dev/null | grep "\"id\":" | cut -d\" -f 4 ))
 	@echo "DEBUG: ToolID: ${tool_id} ServiceID: ${service_id}"
 	@if [[ -z "${tool_id}" ]]; then echo "ERROR: No Tool ID found"; exit -1; fi
-	docker run --rm ${DOCKER_NAME} --print-tool-description  2>/dev/null \
+	docker run --rm ${DOCKER_NAME}-${DEPLOY_ARCH} --print-tool-description  2>/dev/null \
 	| sed 's|#SERVICE_ID#|${service_id}|' \
 	| ivcap aspect update ${service_id} -f - --timeout 600
 
-docker-publish: TARGET_PLATFORM=linux/amd64
+docker-publish: TARGET_ARCH=${DEPLOY_ARCH}
 docker-publish: docker-build
-	@echo "INFO: Publishing docker image '${DOCKER_TAG}' for '${TARGET_PLATFORM}'"
-	docker tag ${DOCKER_NAME} ${DOCKER_TAG}
+	$(eval tag:=${DOCKER_NAME}-${TARGET_ARCH})
+	@echo "INFO: Publishing docker image '${tag}'"
+	docker tag ${tag} ${tag}:${DOCKER_VERSION}
 	$(eval size:=$(shell docker inspect ${DOCKER_NAME} --format='{{.Size}}' | tr -cd '0-9'))
 	$(eval imageSize:=$(shell expr ${size} + 0 ))
 	@echo "... imageSize is ${imageSize}"
-	@$(MAKE) PUSH_FROM="--local " docker-publish-common
+	@$(MAKE) PUSH_FROM="--local " TARGET_ARCH=${TARGET_ARCH} docker-publish-common
 
 docker-publish-common:
-	$(eval log:=$(shell ivcap package push --force ${PUSH_FROM}${DOCKER_TAG} | tee /dev/tty))
+	$(eval vtag:=${DOCKER_NAME}-${TARGET_ARCH}:${DOCKER_VERSION})
+	$(eval log:=$(shell ivcap package push --force ${PUSH_FROM}${vtag} | tee /dev/tty))
 	$(eval SERVICE_IMG := $(shell echo ${log} | sed -E "s/.*([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.*) pushed/\1/"))
-	@if [ "${SERVICE_IMG}" == "" ] || [ "${SERVICE_IMG}" == "${DOCKER_TAG}" ]; then \
+	@if [ "${SERVICE_IMG}" == "" ] || [ "${SERVICE_IMG}" == "${vtag}" ]; then \
 		echo "service package push failed"; \
 		exit 1; \
 	fi
-	@echo "INFO: Successfully published '${DOCKER_TAG}' as '${SERVICE_IMG}'"
+	@echo "INFO: Successfully published '${vtag}' as '${SERVICE_IMG}'"
 
 
 .PHONY: run

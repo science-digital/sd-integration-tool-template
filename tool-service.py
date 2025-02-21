@@ -1,18 +1,11 @@
 import os
 import sys
-from time import sleep
-
-this_dir = os.path.dirname(__file__)
-src_dir = os.path.abspath(os.path.join(this_dir, "../../src"))
-sys.path.append(src_dir)
 
 from fastapi import Body, FastAPI
 from signal import signal, SIGTERM
 
-from ivcap_fastapi import getLogger, service_log_config, logging_init
+from ivcap_fastapi import getLogger, logging_init
 from ivcap_ai_tool import create_tool_definition, start_server
-
-from pydantic import BaseModel, Field
 
 import math
 
@@ -66,7 +59,6 @@ def is_prime(number: int = Body(..., embed=True)) -> bool:
             return False
 
     return True
-
 
 @app.get("/")
 def get_tool_definition():

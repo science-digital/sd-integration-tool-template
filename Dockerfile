@@ -3,7 +3,7 @@ FROM python:3.11.9-slim-bookworm AS builder
 WORKDIR /app
 RUN pip install -U pip
 COPY requirements.txt ./
-RUN pip install -r requirements.txt --force-reinstall
+RUN pip install --no-cache-dir -r requirements.txt --force-reinstall
 
 # Get service files
 ADD tool-service.py  ./
