@@ -4,9 +4,8 @@ This repo template contains an implementation of a
 basic _AI Agent Tool_ usable for various agent frameworks
 like [crewAI](https://www.crewai.com).
 
-The actual tool implemented in ths repo provides a _web search_
-capability by in turn, calling the public API provided by
-[DuckDuckGo](https://duckduck.go.com) search engine
+The actual tool implemented in ths repo provides a simple test if a provided
+number is a prime number or not.
 
 * [Use](#use)
 * [Test](#test)
@@ -15,21 +14,17 @@ capability by in turn, calling the public API provided by
 
 ## Use <a name="test"></a>
 
-Below is an example of an agent definition which uses this tool:
+Below is an example of an agent query which uses this tool:
 ```
-  ...
-  "agents": {
-    "researcher": {
-      "role": "Senior Research Analyst",
-      "goal": "Uncover cutting-edge developments in AI and data science",
-      "backstory": "You work at a leading tech think tank. Your expertise lies in ...",
-      "tools": [
-        {
-          "id": "urn:ivcap:service:ai-tool.ddg-search",
-          "safesearch": "off"
-        }
-      ],
-      ...
+{
+  "$schema": "urn:sd-core:schema:llama-agent.request.1",
+  "name": "Agent query test",
+  "msg": "is 997 a prime number?",
+  "tools": [
+    "urn:sd-core:ai-tool:is_prime"
+  ],
+  "verbose": true
+}
 ```
 
 ## Test <a name="test"></a>
@@ -39,15 +34,33 @@ In order to quickly test this service, follow these steps:
 * `pip install -r requirements.txt`
 * `make run`
 
-In a separate terminal, call the service via `curl` or your favorite http testing tool
 ```
-% curl -X 'POST' -H 'Content-Type: application/json' http://localhost:8080 \
-    -d '{"action": {"query": "ai tool"}, "service": {}}'
+% make run
+env VERSION="|b0af9ba|2025-02-21T15:26+11:00" \
+                python /Users/ott030/src/IVCAP/Services/ivcap-python-ai-tool/tool-service.py
+2025-02-21T15:26:57+1100 INFO (app): AI tool to check for prime numbers - |b0af9ba|2025-02-21T15:26+11:00
+2025-02-21T15:26:57+1100 INFO (uvicorn.error): Started server process [96586]
+2025-02-21T15:26:57+1100 INFO (uvicorn.error): Waiting for application startup.
+2025-02-21T15:26:57+1100 INFO (uvicorn.error): Application startup complete.
+2025-02-21T15:26:57+1100 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8090 (Press CTRL+C to quit)
+```
 
-{"query":"ai tool","result":"[snippet: If your company hasn't already adopted artificial intelligence, here are some of the top tools you can choose from., title: The 43 Best AI Tools to Know | Built In, link: https://builtin.com/artificial-intel....
+In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
+```
+% make test-local
+curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8090
+HTTP/1.1 200 OK
+date: Fri, 21 Feb 2025 04:21:50 GMT
+server: uvicorn
+content-length: 4
+content-type: application/json
+
+true%
 ```
 
 A more "web friendly" way is to open [http://localhost:8080/api](http://localhost:8080/api)
+
+<img src="openapi.png" width="400"/>
 
 ## Build & Deploy <a name="build"></a>
 
@@ -66,157 +79,140 @@ The following [Makefile](./Makefile) targets have been provided
 * `make docker-build`: Build the docker container
 * `make service-register`: Published the container as well as registers the service
 
+You may first want to locally test the build and execution of the docker container.
+
+```
+% make docker-build
+Building docker image 'is_prime_tool' for 'linux/arm64'
+docker build \
+                -t is_prime_tool:latest \
+                --platform=linux/arm64 \
+                --build-arg VERSION="|b0af9ba|2025-02-21T15:34+11:00" \
+                -f .../Dockerfile \
+                ...
+```
+
+and then test it by first starting the docker service:
+
+```
+% make docker-run
+docker run -it \
+                -p 8090:8090 \
+                --user "502:20" \
+                --platform=linux/arm64 \
+                --rm \
+                is_prime_tool:latest
+2025-02-21T04:35:27+0000 INFO (app): AI tool to check for prime numbers - |b0af9ba|2025-02-21T15:34+11:00
+2025-02-21T04:35:27+0000 INFO (uvicorn.error): Started server process [1]
+2025-02-21T04:35:27+0000 INFO (uvicorn.error): Waiting for application startup.
+2025-02-21T04:35:27+0000 INFO (uvicorn.error): Application startup complete.
+2025-02-21T04:35:27+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8090 (Press CTRL+C to quit)
+```
+
+and then in a different terminal to already above mentioned:
+```
+% make test-local
+curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8090
+HTTP/1.1 200 OK
+...
+content-length: 4
+content-type: application/json
+
+true%
+```
+
+
+
+
 ## Implementation <a name="implementation"></a>
 
-This service is implemented in [tool.py](./tool.py) using [fastAPI](https://fastapi.tiangolo.com/).
+### [tool-service.py](./tool-service.py)
 
-It provides the following API endpoints:
+Implements a simple http based service which provides a `POST /` service endpoint to test
+if the number contained in the request is a prime number or not.
 
-* `GET /`: Returning the tool description
-* `POST /`: Requesting the tool to perform an action
-* `GET /_healtz`: A "health" endpoint need for operational purposes
-
-In addition:
-
-* `GET /api` and `GET /openapi.json`: Automatically provided by [fastAPI](https://fastapi.tiangolo.com/).
-
-### Service structure
-
-AN AI tool is expected to return a tool description via `GET /` containing two parts:
-
-* `action`: Defining the schema for the action an agent is requesting.
-* `service`: Defining the schema for the various configuration options the tool may provide
-
-For this tool, the action schema is simply the query string:
-```
-class ActionProps(BaseModel):
-    query: str = Field(description="search query to look up")
-```
-
-while the service schema more closely reflects the service internals, which in this case are:
-```
-class ServiceProps(BaseModel):
-    region: str = Field(description="'wt-wt' the world", default="wt-wt")
-    safesearch: SafeSearchE = SafeSearchE.moderate
-    timelimit: TimeLimitE = TimeLimitE.y
-    max_results: int = 5
-    source: SourceE = SourceE.text
-```
-
-Finally, an AI tool is expected to return the result of the requested action as string (possibly with some internally structure) in the `result` property of the reply. It may provide additional information, such as the part of the request, for debugging purposes.
+We first configure the logging system to use a more "machine" friendly format to simplify service monitoring on the platform.
 
 ```
-class Response(BaseModel):
-    result: str
-    ...
+from ivcap_fastapi import getLogger, service_log_config, logging_init
+
+logging_init()
+logger = getLogger("app")
 ```
 
-### `tools.py`
-
-The code in [lambda.py](tools.py) falls into the following parts:
-
-#### Import packages
+This is followed by a standard `FastAPI` service declaration:
 
 ```
-from enum import Enum
-from fastapi import FastAPI, HTTPException
-from signal import signal, SIGTERM
-import sys
-import os
-from pydantic import BaseModel, Field
-
-from duckduckgo_search import DDGS
-```
-
-#### Setting up a graceful shutdown for kubernetes deployments
-
-```
+# shutdown pod cracefully
 signal(SIGTERM, lambda _1, _2: sys.exit(0))
-```
 
-#### Service description and general `fastAPI` setup
-
-```
+title="AI tool to check for prime numbers"
 description = """
-A wrapper around DuckDuckGo Search.
-Useful for when you need to answer questions about current events.
-Input should be a search query.
+AI tool to help determining if a number is a prime number.
 """
 
 app = FastAPI(
-    title="AI tool to retrieve infomation via DuckDuckGo Search",
+    title=title,
     description=description,
-    ...
+    version=os.environ.get("VERSION", "???"),
+    contact={
+        "name": "Max Ott",
+        "email": "max.ott@data61.csiro.au",
+    },
+    license_info={
+        "name": "MIT",
+        "url": "https://opensource.org/license/MIT",
+    },
+    docs_url="/api",
+    root_path=os.environ.get("IVCAP_ROOT_PATH", "")
+)
 ```
 
-#### Defining the service's data model
-
-```
-class StrEnum(str, Enum):
-    def __repr__(self) -> str:
-        return str.__repr__(self.value)
-
-class SafeSearchE(StrEnum):
-    on = "on"
-    moderate = "moderate"
-    off = "off"
-
-...
-
-class Props(BaseModel):
-    action: ActionProps
-    service: ServiceProps
-
-class Response(BaseModel):
-    query: str
-    result: str
-```
-
-#### The service description
-
-```
-@app.get("/")
-def info():
-    return {
-        "$schema": "urn:sd.platform:schema:ai-tool.1",
-        "name": "duckduckgo_search",
-        "description": description,
-        "action_schema":  ActionProps.model_json_schema(by_alias=False),
-        "service_schema": ServiceProps.model_json_schema(),
-    }
-```
-
-#### The service implementation itself
+The core function of the tool itself is accessible as `POST /`. The service signature should be kept as simple as possible. However, to be properly used by an Agent, we should provide a
+comprehensive function documentation including the required parameters as well as the reply.
 
 ```
 @app.post("/")
-def query(req: Props) -> Response:
-    """Returns the search results as a serialised list with the following keys:
-        snippet - The description of the result.
-        title - The title of the result.
-        link - The link to the result.
+def is_prime(number: int = Body(..., embed=True)) -> bool:
+    """
+    Checks if a number is a prime number.
+
+    Args:
+        number: The number to check.
+
+    Returns:
+        True if the number is prime, False otherwise.
+    """
     ...
 ```
 
-#### And finally, the _Health_ indicator needed by Kubernetes
+In addition to the main "tool" implementation we need two more service
+endpoints to allow the platform to obtain the tool description (`GET /`)
+as well as test the liveness of the agent (`GET /_healtz`).
 
 ```
+@app.get("/")
+def get_metadata():
+    return create_tool_definition(is_prime)
+
+# Allows platform to check if everything is OK
 @app.get("/_healtz")
 def healtz():
     return {"version": os.environ.get("VERSION", "???")}
 ```
 
-To test the service, first run `make install` (ideally within a `venv` or `conda` environment) beforehand to install the necessary dependencies. Then `make run` will start the service listing on [http://0.0.0.0:8080](http://0.0.0.0:8080).
+Finally, we need to start the server to listen for incoming requests:
 
-### [service.json](./service.json)
+```
+# Start server
+start_server(app, title, is_prime, logger)
+```
 
-This file describes the service as needed for the `ivcap service create ...` command.
 
-> The format is still in flux and we most likely going to reference
-the approprite section in the [IVCAP Docs](https://ivcap-works.github.io/ivcap-docs/).
+## [service.json](./service.json)
 
-### [Dockerfile](./Dockerfile)
+This file contains the necessary instructions for IVCAP to provision the
+tool as an IVCAP service.
 
-This file describes a simple configuration for building a docker image for
-this service. The make target `make docker-build` will build the image, and
-the `make docker-publish` target will upload it to IVCAP.
+> **NOTE:** The placeholders `#SERVICE_ID#` and `#DOCKER_IMG#` which will
+be resolved by the `make service-register` target

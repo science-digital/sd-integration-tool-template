@@ -6,11 +6,11 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt --force-reinstall
 
 # Get service files
-ADD tool.py run.sh ./
+ADD tool-service.py  ./
 
 # VERSION INFORMATION
 ARG VERSION ???
 ENV VERSION=$VERSION
 
 # Command to run
-ENTRYPOINT ["/app/run.sh"]
+ENTRYPOINT ["python",  "/app/tool-service.py"]

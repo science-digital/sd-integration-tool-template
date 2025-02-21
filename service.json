@@ -1,16 +1,18 @@
 {
   "$schema": "urn:ivcap:schema:service.2",
   "id": "#SERVICE_ID#",
-  "name": "chat-with-eliza",
-  "description": "An AI tool which provides a simple wrapper around DuckDuckGo Search",
+  "name": "is-prime-tool",
+  "description": "AI tool to help determining if a number is a prime number.",
   "parameters": [],
-  "policy": "urn:ivcap:policy:ivcap.base.service",
+  "policy": "urn:ivcap:policy:ivcap.open.service",
+  "controller-schema": "urn:ivcap:schema.service.rest.1",
   "controller": {
-    "$schema": "urn:ivcap:schema.controller.service-proxy.1",
+    "$schema": "urn:ivcap:schema.service.rest.1",
     "image": "#DOCKER_IMG#",
-    "port": 8080,
+    "port": 8090,
     "command": [
-      "/app/run.sh"
+      "python",
+      "/app/tool-service.py"
     ],
     "resources": {
       "limits": {
