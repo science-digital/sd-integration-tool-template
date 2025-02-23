@@ -5,7 +5,7 @@ from fastapi import Body, FastAPI
 from signal import signal, SIGTERM
 
 from ivcap_fastapi import getLogger, logging_init
-from ivcap_ai_tool import create_tool_definition, start_server
+from ivcap_ai_tool import create_tool_definition, start_tool_server
 
 import math
 
@@ -70,4 +70,4 @@ def healtz():
     return {"version": os.environ.get("VERSION", "???")}
 
 # Start server
-start_server(app, title, is_prime, logger)
+start_tool_server(app, title, is_prime, logger)
