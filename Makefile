@@ -17,14 +17,15 @@ TARGET_ARCH := $(shell uname -m)
 DEPLOY_ARCH=amd64
 
 PROJECT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-SERVICE_URL=http://localhost:8099
+PORT=8094
+SERVICE_URL=http://localhost:${PORT}
 
 run:
 	env VERSION=$(VERSION) \
 		python ${PROJECT_DIR}/tool-service.py
 
 test-local:
-	curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8090
+	curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:${PORT}
 
 submit-agent-query:
 	curl -i -X POST \
@@ -39,8 +40,7 @@ install:
 
 docker-run: docker-build
 	docker run -it \
-		-p 8080:8080 \
-		--user ${DOCKER_USER} \
+		-p ${PORT}:80 \
 		--platform=linux/${TARGET_ARCH} \
 		--rm \
 		${DOCKER_NAME}-${TARGET_ARCH}

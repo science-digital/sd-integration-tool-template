@@ -42,13 +42,13 @@ env VERSION="|b0af9ba|2025-02-21T15:26+11:00" \
 2025-02-21T15:26:57+1100 INFO (uvicorn.error): Started server process [96586]
 2025-02-21T15:26:57+1100 INFO (uvicorn.error): Waiting for application startup.
 2025-02-21T15:26:57+1100 INFO (uvicorn.error): Application startup complete.
-2025-02-21T15:26:57+1100 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8090 (Press CTRL+C to quit)
+2025-02-21T15:26:57+1100 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8094 (Press CTRL+C to quit)
 ```
 
 In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
 ```
 % make test-local
-curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8090
+curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8094
 HTTP/1.1 200 OK
 date: Fri, 21 Feb 2025 04:21:50 GMT
 server: uvicorn
@@ -58,7 +58,7 @@ content-type: application/json
 true%
 ```
 
-A more "web friendly" way is to open [http://localhost:8080/api](http://localhost:8080/api)
+A more "web friendly" way is to open [http://localhost:8094/api](http://localhost:8094/api)
 
 <img src="openapi.png" width="400"/>
 
@@ -97,8 +97,7 @@ and then test it by first starting the docker service:
 ```
 % make docker-run
 docker run -it \
-                -p 8090:8090 \
-                --user "502:20" \
+                -p 8094:80 \
                 --platform=linux/arm64 \
                 --rm \
                 is_prime_tool:latest
@@ -106,13 +105,13 @@ docker run -it \
 2025-02-21T04:35:27+0000 INFO (uvicorn.error): Started server process [1]
 2025-02-21T04:35:27+0000 INFO (uvicorn.error): Waiting for application startup.
 2025-02-21T04:35:27+0000 INFO (uvicorn.error): Application startup complete.
-2025-02-21T04:35:27+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8090 (Press CTRL+C to quit)
+2025-02-21T04:35:27+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8094 (Press CTRL+C to quit)
 ```
 
 and then in a different terminal to already above mentioned:
 ```
 % make test-local
-curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8090
+curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8094
 HTTP/1.1 200 OK
 ...
 content-length: 4
