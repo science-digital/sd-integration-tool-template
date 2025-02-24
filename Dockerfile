@@ -11,6 +11,7 @@ ADD tool-service.py  ./
 # VERSION INFORMATION
 ARG VERSION ???
 ENV VERSION=$VERSION
+ENV PORT=80
 
 # Command to run
 ENTRYPOINT ["python",  "/app/tool-service.py"]
