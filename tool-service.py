@@ -1,13 +1,16 @@
 import os
 import sys
-
-from fastapi import Body, FastAPI
+import math
+from pydantic import BaseModel, Field
+from fastapi import FastAPI
 from signal import signal, SIGTERM
 
-from ivcap_fastapi import getLogger, logging_init
-from ivcap_ai_tool import create_tool_definition, start_tool_server
+this_dir = os.path.dirname(__file__)
+src_dir = os.path.abspath(os.path.join(this_dir, "../../src"))
+sys.path.insert(0, src_dir)
 
-import math
+from ivcap_fastapi import getLogger, logging_init
+from ivcap_ai_tool import start_tool_server, add_tool_api_route, ToolOptions
 
 logging_init()
 logger = getLogger("app")
@@ -36,38 +39,33 @@ app = FastAPI(
     root_path=os.environ.get("IVCAP_ROOT_PATH", "")
 )
 
-@app.post("/")
-def is_prime(number: int = Body(..., embed=True)) -> bool:
-    """
-    Checks if a number is a prime number.
+class Request(BaseModel):
+    jschema: str = Field("urn:sd:schema:is-prime.request.1", alias="$schema")
+    number: int = Field(description="the number to check if prime")
 
-    Args:
-        number: The number to check.
+class Result(BaseModel):
+    jschema: str = Field("urn:sd:schema:is-prime.1", alias="$schema")
+    flag: bool = Field(description="true if number is prime, false otherwise")
 
-    Returns:
-        True if the number is prime, False otherwise.
+def is_prime(req: Request) -> Result:
     """
+    Checks if a number is prime.
+    """
+    number = req.number
     if number <= 1:
-        return False
+        return Result(flag=False)
     if number <= 3:
-        return True
+        return Result(flag=True)
     if number % 2 == 0 or number % 3 == 0:
-        return False
+        return Result(flag=False)
 
     for i in range(5, int(math.sqrt(number)) + 1, 6):
         if number % i == 0 or number % (i + 2) == 0:
-            return False
+            return Result(flag=False)
 
-    return True
+    return Result(flag=True)
 
-@app.get("/")
-def get_tool_definition():
-    return create_tool_definition(is_prime)
+add_tool_api_route(app, "/", is_prime, opts=ToolOptions(tags=["Prime Checker"]))
 
-# Allows platform to check if everything is OK
-@app.get("/_healtz")
-def healtz():
-    return {"version": os.environ.get("VERSION", "???")}
-
-# Start server
-start_tool_server(app, title, is_prime, logger)
+if __name__ == "__main__":
+    start_tool_server(app, is_prime)

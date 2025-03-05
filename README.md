@@ -42,13 +42,13 @@ env VERSION="|b0af9ba|2025-02-21T15:26+11:00" \
 2025-02-21T15:26:57+1100 INFO (uvicorn.error): Started server process [96586]
 2025-02-21T15:26:57+1100 INFO (uvicorn.error): Waiting for application startup.
 2025-02-21T15:26:57+1100 INFO (uvicorn.error): Application startup complete.
-2025-02-21T15:26:57+1100 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8094 (Press CTRL+C to quit)
+2025-02-21T15:26:57+1100 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
 ```
 
 In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
 ```
 % make test-local
-curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8094
+curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8078
 HTTP/1.1 200 OK
 date: Fri, 21 Feb 2025 04:21:50 GMT
 server: uvicorn
@@ -58,7 +58,7 @@ content-type: application/json
 true%
 ```
 
-A more "web friendly" way is to open [http://localhost:8094/api](http://localhost:8094/api)
+A more "web friendly" way is to open [http://localhost:8078/api](http://localhost:8078/api)
 
 <img src="openapi.png" width="400"/>
 
@@ -83,11 +83,11 @@ You may first want to locally test the build and execution of the docker contain
 
 ```
 % make docker-build
-Building docker image 'is_prime_tool' for 'linux/arm64'
+Building docker image 'is_prime_tool-arm64'
 docker build \
-                -t is_prime_tool:latest \
+                -t is_prime_tool-arm64 \
                 --platform=linux/arm64 \
-                --build-arg VERSION="|b0af9ba|2025-02-21T15:34+11:00" \
+                --build-arg VERSION="|6f2ada2|2025-03-05T14:06+11:00" \
                 -f .../Dockerfile \
                 ...
 ```
@@ -96,32 +96,32 @@ and then test it by first starting the docker service:
 
 ```
 % make docker-run
+Building docker image 'is_prime_tool-arm64'
+docker build \
+  ...
 docker run -it \
-                -p 8094:80 \
+                -p 8078:8078 \
                 --platform=linux/arm64 \
                 --rm \
-                is_prime_tool:latest
+                is_prime_tool-arm64 --port 8078
 2025-02-21T04:35:27+0000 INFO (app): AI tool to check for prime numbers - |b0af9ba|2025-02-21T15:34+11:00
 2025-02-21T04:35:27+0000 INFO (uvicorn.error): Started server process [1]
 2025-02-21T04:35:27+0000 INFO (uvicorn.error): Waiting for application startup.
 2025-02-21T04:35:27+0000 INFO (uvicorn.error): Application startup complete.
-2025-02-21T04:35:27+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8094 (Press CTRL+C to quit)
+2025-02-21T04:35:27+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
 ```
 
 and then in a different terminal to already above mentioned:
 ```
 % make test-local
-curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8094
+curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8078
 HTTP/1.1 200 OK
 ...
-content-length: 4
+content-length: 50
 content-type: application/json
 
-true%
+{"$schema":"urn:sd:schema:is-prime.1","flag":true}%
 ```
-
-
-
 
 ## Implementation <a name="implementation"></a>
 
@@ -133,7 +133,7 @@ if the number contained in the request is a prime number or not.
 We first configure the logging system to use a more "machine" friendly format to simplify service monitoring on the platform.
 
 ```
-from ivcap_fastapi import getLogger, service_log_config, logging_init
+from ivcap_ai_tool import start_tool_server, add_tool_api_route, ToolOptions
 
 logging_init()
 logger = getLogger("app")
@@ -171,18 +171,20 @@ The core function of the tool itself is accessible as `POST /`. The service sign
 comprehensive function documentation including the required parameters as well as the reply.
 
 ```
-@app.post("/")
-def is_prime(number: int = Body(..., embed=True)) -> bool:
+class Request(BaseModel):
+    jschema: str = Field("urn:sd:schema:is-prime.request.1", alias="$schema")
+    number: int = Field(description="the number to check if prime")
+
+class Result(BaseModel):
+    jschema: str = Field("urn:sd:schema:is-prime.1", alias="$schema")
+    flag: bool = Field(description="true if number is prime, false otherwise")
+
+def is_prime(req: Request) -> Result:
     """
     Checks if a number is a prime number.
-
-    Args:
-        number: The number to check.
-
-    Returns:
-        True if the number is prime, False otherwise.
     """
     ...
+    return Result(flag=True)
 ```
 
 In addition to the main "tool" implementation we need two more service
@@ -190,21 +192,16 @@ endpoints to allow the platform to obtain the tool description (`GET /`)
 as well as test the liveness of the agent (`GET /_healtz`).
 
 ```
-@app.get("/")
-def get_metadata():
-    return create_tool_definition(is_prime)
-
-# Allows platform to check if everything is OK
-@app.get("/_healtz")
-def healtz():
-    return {"version": os.environ.get("VERSION", "???")}
+add_tool_api_route(app, "/", is_prime, opts=ToolOptions(tags=["Prime Checker"]))
 ```
 
-Finally, we need to start the server to listen for incoming requests:
+Finally, we need to register the main "tool" implementation and start the server
+to listen for incoming requests:
 
 ```
 # Start server
-start_server(app, title, is_prime, logger)
+if __name__ == "__main__":
+    start_tool_server(app, is_prime)
 ```
 
 

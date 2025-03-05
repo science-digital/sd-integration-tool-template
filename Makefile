@@ -17,12 +17,12 @@ TARGET_ARCH := $(shell uname -m)
 DEPLOY_ARCH=amd64
 
 PROJECT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-PORT=8094
+PORT=8078
 SERVICE_URL=http://localhost:${PORT}
 
 run:
 	env VERSION=$(VERSION) \
-		python ${PROJECT_DIR}/tool-service.py
+		python ${PROJECT_DIR}/tool-service.py --port ${PORT}
 
 test-local:
 	curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:${PORT}
@@ -40,10 +40,10 @@ install:
 
 docker-run: docker-build
 	docker run -it \
-		-p ${PORT}:80 \
+		-p ${PORT}:${PORT} \
 		--platform=linux/${TARGET_ARCH} \
 		--rm \
-		${DOCKER_NAME}-${TARGET_ARCH}
+		${DOCKER_NAME}-${TARGET_ARCH} --port ${PORT}
 
 docker-debug: #docker-build
 	docker run -it \
