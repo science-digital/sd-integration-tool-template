@@ -4,10 +4,7 @@ import math
 from pydantic import BaseModel, Field
 from fastapi import FastAPI
 from signal import signal, SIGTERM
-
-this_dir = os.path.dirname(__file__)
-src_dir = os.path.abspath(os.path.join(this_dir, "../../src"))
-sys.path.insert(0, src_dir)
+from pydantic import BaseModel, ConfigDict
 
 from ivcap_fastapi import getLogger, logging_init
 from ivcap_ai_tool import start_tool_server, add_tool_api_route, ToolOptions
@@ -40,30 +37,48 @@ app = FastAPI(
 )
 
 class Request(BaseModel):
-    jschema: str = Field("urn:sd:schema:is-prime.request.1", alias="$schema")
+    jschema: str = Field("urn:sd:schema.is-prime.request.1", alias="$schema")
     number: int = Field(description="the number to check if prime")
 
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "$schema": "urn:sd:schema.is-prime.request.1",
+            "number": 997
+        }
+    })
+
 class Result(BaseModel):
-    jschema: str = Field("urn:sd:schema:is-prime.1", alias="$schema")
-    flag: bool = Field(description="true if number is prime, false otherwise")
+    jschema: str = Field("urn:sd:schema.is-prime.1", alias="$schema")
+    number: int = Field(description="the number to check if prime")
+    is_prime: bool = Field(description="true if number is prime, false otherwise")
+
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "$schema": "urn:sd:schema.is-prime.1",
+            "number": 997,
+            "is_prime": True
+        }
+    })
 
 def is_prime(req: Request) -> Result:
     """
     Checks if a number is prime.
     """
     number = req.number
+    is_prime = True
     if number <= 1:
-        return Result(flag=False)
-    if number <= 3:
-        return Result(flag=True)
-    if number % 2 == 0 or number % 3 == 0:
-        return Result(flag=False)
+        is_prime = False
+    elif number <= 3:
+        is_prime = True
+    elif number % 2 == 0 or number % 3 == 0:
+        is_prime = False
+    else:
+        for i in range(5, int(math.sqrt(number)) + 1, 6):
+            if number % i == 0 or number % (i + 2) == 0:
+                is_prime = False
+                break
 
-    for i in range(5, int(math.sqrt(number)) + 1, 6):
-        if number % i == 0 or number % (i + 2) == 0:
-            return Result(flag=False)
-
-    return Result(flag=True)
+    return Result(number=number, is_prime=is_prime)
 
 add_tool_api_route(app, "/", is_prime, opts=ToolOptions(tags=["Prime Checker"]))
 
