@@ -18,24 +18,19 @@ run:
 test-local:
 	curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:${PORT}
 
-TEST_SERVER=http://ivcap.minikube
-TEST_REQUEST=tests/echo.json
+test-job: IVCAP_API=https://develop.ivcap.net
 test-job:
-	curl  -i  \
-		-X POST \
-		-H "Authorization: Bearer $(shell ivcap context get access-token --refresh-token)"  \
-		-H "Content-Type: application/json" \
-		-H "Timeout: 60" \
-		--data "{\"number\": 997}" \
-		${TEST_SERVER}/1/services2/${SERVICE_ID}/jobs
+	TOKEN=$(shell ivcap context get access-token --refresh-token); \
+	curl \
+	-X POST \
+	-H "content-type: application/json" \
+	-H "Timeout: 20" \
+	-H "Authorization: Bearer $$TOKEN" \
+	--data "{\"number\": 997}" \
+	${IVCAP_API}/1/services2/${SERVICE_ID}/jobs?with-result-content=true | jq
 
-submit-agent-query:
-	curl -i -X POST \
-		-H "Content-Type: application/json" \
-		-H "X-Job-UUID: 00000000-0000-0000-0000-000000000000" \
-		-H "X-Job-URL: ${SERVICE_URL}/00000000-0000-0000-0000-000000000000" \
-		-d @${PROJECT_DIR}/test_query.json ${SERVICE_URL}
-	curl -i --no-buffer -N ${SERVICE_URL}/00000000-0000-0000-0000-000000000000
+test-job-minikube:
+	@$(MAKE) IVCAP_API=http://ivcap.minikube test-job
 
 install:
 	pip install -r requirements.txt
