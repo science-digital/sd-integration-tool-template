@@ -32,6 +32,9 @@ test-job:
 test-job-minikube:
 	@$(MAKE) IVCAP_API=http://ivcap.minikube test-job
 
+test-job-ivcap:
+	@$(MAKE) IVCAP_API=https://develop.ivcap.net test-job
+
 install:
 	pip install -r requirements.txt
 
