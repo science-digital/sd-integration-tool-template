@@ -38,12 +38,12 @@ test-job-ivcap:
 install:
 	pip install -r requirements.txt
 
-docker-run: docker-build
+docker-run: #docker-build
 	docker run -it \
 		-p ${PORT}:${PORT} \
 		--platform=linux/${TARGET_ARCH} \
 		--rm \
-		${DOCKER_NAME}-${TARGET_ARCH} --port ${PORT}
+		${DOCKER_NAME}_${TARGET_ARCH} --port ${PORT}
 
 docker-debug: #docker-build
 	docker run -it \
@@ -51,7 +51,7 @@ docker-debug: #docker-build
 		--user ${DOCKER_USER} \
 		--platform=linux/${TARGET_ARCH} \
 		--entrypoint bash \
-		${DOCKER_NAME}-${TARGET_ARCH}
+		${DOCKER_NAME}_${TARGET_ARCH}
 
 
 .PHONY: run
