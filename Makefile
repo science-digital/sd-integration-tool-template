@@ -13,7 +13,7 @@ include Makefile.common
 
 run:
 	env VERSION=$(VERSION) \
-		python ${PROJECT_DIR}/tool-service.py --port ${PORT}
+		poetry run python ${PROJECT_DIR}/tool-service.py --port ${PORT}
 
 test-local:
 	curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:${PORT}
@@ -36,7 +36,7 @@ test-job-ivcap:
 	@$(MAKE) IVCAP_API=https://develop.ivcap.net test-job
 
 install:
-	pip install -r requirements.txt
+	poetry lock
 
 docker-run: #docker-build
 	docker run -it \

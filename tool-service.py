@@ -1,40 +1,25 @@
-import os
-import sys
 import math
 from pydantic import BaseModel, Field
-from fastapi import FastAPI
-from signal import signal, SIGTERM
 from pydantic import BaseModel, ConfigDict
 
-from ivcap_fastapi import getLogger, logging_init
-from ivcap_ai_tool import start_tool_server, add_tool_api_route, ToolOptions
+from ivcap_service import getLogger, Service
+from ivcap_ai_tool import start_tool_server, ToolOptions, ivcap_ai_tool, logging_init
 
 logging_init()
 logger = getLogger("app")
 
-# shutdown pod cracefully
-signal(SIGTERM, lambda _1, _2: sys.exit(0))
-
-title="AI tool to check for prime numbers"
-description = """
-AI tool to help determining if a number is a prime number.
-"""
-
-app = FastAPI(
-    title=title,
-    description=description,
-    version=os.environ.get("VERSION", "???"),
+service = Service(
+    name="AI tool to check for prime numbers",
     contact={
         "name": "Max Ott",
         "email": "max.ott@data61.csiro.au",
     },
-    license_info={
+    license={
         "name": "MIT",
         "url": "https://opensource.org/license/MIT",
     },
-    docs_url="/api",
-    root_path=os.environ.get("IVCAP_ROOT_PATH", "")
 )
+
 
 class Request(BaseModel):
     jschema: str = Field("urn:sd:schema.is-prime.request.1", alias="$schema")
@@ -60,6 +45,7 @@ class Result(BaseModel):
         }
     })
 
+@ivcap_ai_tool("/", opts=ToolOptions(tags=["Prime Checker"]))
 def is_prime(req: Request) -> Result:
     """
     Checks if a number is prime.
@@ -80,7 +66,5 @@ def is_prime(req: Request) -> Result:
 
     return Result(number=number, is_prime=is_prime)
 
-add_tool_api_route(app, "/", is_prime, opts=ToolOptions(tags=["Prime Checker"]))
-
 if __name__ == "__main__":
-    start_tool_server(app, is_prime)
+    start_tool_server(service)

@@ -1,9 +1,11 @@
 FROM python:3.11.9-slim-bookworm AS builder
 
+
+RUN pip install poetry
+
 WORKDIR /app
-RUN pip install -U pip
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt --force-reinstall
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false && poetry install --no-root
 
 # Get service files
 ADD tool-service.py  ./

@@ -36,13 +36,13 @@ In order to quickly test this service, follow these steps:
 
 ```
 % make run
-env VERSION="|b0af9ba|2025-02-21T15:26+11:00" \
-                python /Users/ott030/src/IVCAP/Services/ivcap-python-ai-tool/tool-service.py
-2025-02-21T15:26:57+1100 INFO (app): AI tool to check for prime numbers - |b0af9ba|2025-02-21T15:26+11:00
-2025-02-21T15:26:57+1100 INFO (uvicorn.error): Started server process [96586]
-2025-02-21T15:26:57+1100 INFO (uvicorn.error): Waiting for application startup.
-2025-02-21T15:26:57+1100 INFO (uvicorn.error): Application startup complete.
-2025-02-21T15:26:57+1100 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
+env VERSION="v0.1.0|edd6b1f|2025-05-22T18:42+10:00" \
+                poetry run python tool-service.py --port 8078
+2025-05-22T18:42:03+1000 INFO (app): AI tool to check for prime numbers - v0.1.0|edd6b1f|2025-05-22T18:42+10:00 - v0.7.1
+2025-05-22T18:42:03+1000 INFO (uvicorn.error): Started server process [85624]
+2025-05-22T18:42:03+1000 INFO (uvicorn.error): Waiting for application startup.
+2025-05-22T18:42:03+1000 INFO (uvicorn.error): Application startup complete.
+2025-05-22T18:42:03+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
 ```
 
 In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
@@ -50,12 +50,14 @@ In a separate terminal, call the service via `make test-local` or your favorite 
 % make test-local
 curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8078
 HTTP/1.1 200 OK
-date: Fri, 21 Feb 2025 04:21:50 GMT
+date: Thu, 22 May 2025 08:42:39 GMT
 server: uvicorn
-content-length: 4
+job-id: urn:ivcap:job:1f036e8b-87d0-690a-b52a-7fc7a4ea5307
+content-length: 67
 content-type: application/json
+ivcap-ai-tool-version: 0.7.1
 
-true%
+{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
 ```
 
 A more "web friendly" way is to open [http://localhost:8078/api](http://localhost:8078/api)
@@ -104,11 +106,11 @@ docker run -it \
                 --platform=linux/arm64 \
                 --rm \
                 is_prime_tool-arm64 --port 8078
-2025-02-21T04:35:27+0000 INFO (app): AI tool to check for prime numbers - |b0af9ba|2025-02-21T15:34+11:00
-2025-02-21T04:35:27+0000 INFO (uvicorn.error): Started server process [1]
-2025-02-21T04:35:27+0000 INFO (uvicorn.error): Waiting for application startup.
-2025-02-21T04:35:27+0000 INFO (uvicorn.error): Application startup complete.
-2025-02-21T04:35:27+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
+2025-05-22T08:43:39+0000 INFO (app): AI tool to check for prime numbers - v0.1.0|edd6b1f|2025-05-22T18:39+10:00 - v0.7.1
+2025-05-22T08:43:39+0000 INFO (uvicorn.error): Started server process [1]
+2025-05-22T08:43:39+0000 INFO (uvicorn.error): Waiting for application startup.
+2025-05-22T08:43:39+0000 INFO (uvicorn.error): Application startup complete.
+2025-05-22T08:43:39+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
 ```
 
 and then in a different terminal to already above mentioned:
@@ -117,10 +119,10 @@ and then in a different terminal to already above mentioned:
 curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8078
 HTTP/1.1 200 OK
 ...
-content-length: 50
+content-length: 67
 content-type: application/json
 
-{"$schema":"urn:sd:schema:is-prime.1","flag":true}%
+{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}%
 ```
 
 ## Implementation <a name="implementation"></a>
@@ -130,45 +132,44 @@ content-type: application/json
 Implements a simple http based service which provides a `POST /` service endpoint to test
 if the number contained in the request is a prime number or not.
 
-We first configure the logging system to use a more "machine" friendly format to simplify service monitoring on the platform.
+We first import a few library functionss and configure the logging system to use a more "machine" friendly format to simplify service monitoring on the platform.
 
 ```
-from ivcap_ai_tool import start_tool_server, add_tool_api_route, ToolOptions
+import math
+from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
+
+from ivcap_service import getLogger, Service
+from ivcap_ai_tool import start_tool_server, ToolOptions, ivcap_ai_tool, logging_init
 
 logging_init()
 logger = getLogger("app")
 ```
 
-This is followed by a standard `FastAPI` service declaration:
+We then describe the service, who to contact and other useful information used whne deploying the service
 
 ```
-# shutdown pod cracefully
-signal(SIGTERM, lambda _1, _2: sys.exit(0))
-
-title="AI tool to check for prime numbers"
-description = """
-AI tool to help determining if a number is a prime number.
-"""
-
-app = FastAPI(
-    title=title,
-    description=description,
-    version=os.environ.get("VERSION", "???"),
+service = Service(
+    name="AI tool to check for prime numbers",
     contact={
         "name": "Max Ott",
         "email": "max.ott@data61.csiro.au",
     },
-    license_info={
+    license={
         "name": "MIT",
         "url": "https://opensource.org/license/MIT",
     },
-    docs_url="/api",
-    root_path=os.environ.get("IVCAP_ROOT_PATH", "")
 )
 ```
 
-The core function of the tool itself is accessible as `POST /`. The service signature should be kept as simple as possible. However, to be properly used by an Agent, we should provide a
+The core function of the tool itself is accessible as `POST /`. The service signature should be kept as simple as possible.
+We highly recommend defining the input as well as the result by a single `pydantic` model, respectively.
+However, for a tool to be properly used by an Agent, we should provide a
 comprehensive function documentation including the required parameters as well as the reply.
+
+Please also note the `@ivcap_ai_tool` decorator. It exposes the service via `POST \`, but also a `GET /`
+to allow the platform to obtain the tool description which can be used by agents to select the right
+tool but also understand on how to use it.
 
 ```
 class Request(BaseModel):
@@ -179,6 +180,7 @@ class Result(BaseModel):
     jschema: str = Field("urn:sd:schema:is-prime.1", alias="$schema")
     flag: bool = Field(description="true if number is prime, false otherwise")
 
+@ivcap_ai_tool("/", opts=ToolOptions(tags=["Prime Checker"]))
 def is_prime(req: Request) -> Result:
     """
     Checks if a number is a prime number.
@@ -187,28 +189,17 @@ def is_prime(req: Request) -> Result:
     return Result(flag=True)
 ```
 
-In addition to the main "tool" implementation we need two more service
-endpoints to allow the platform to obtain the tool description (`GET /`)
-as well as test the liveness of the agent (`GET /_healtz`).
-
-```
-add_tool_api_route(app, "/", is_prime, opts=ToolOptions(tags=["Prime Checker"]))
-```
-
-Finally, we need to register the main "tool" implementation and start the server
+Finally, we need to start the server
 to listen for incoming requests:
 
 ```
 # Start server
 if __name__ == "__main__":
-    start_tool_server(app, is_prime)
+    start_tool_server(service)
 ```
 
+## [resources.json](./resources.json)
 
-## [service.json](./service.json)
-
-This file contains the necessary instructions for IVCAP to provision the
-tool as an IVCAP service.
-
-> **NOTE:** The placeholders `#SERVICE_ID#` and `#DOCKER_IMG#` which will
-be resolved by the `make service-register` target
+This file contains the resource requirements for this tool. This will depend on the computational and memory
+requirements for the specific tool. If it is not provided a default will be used which is likely very similar
+to this file.
