@@ -2,7 +2,7 @@ import math
 from pydantic import BaseModel, Field
 from pydantic import BaseModel, ConfigDict
 
-from ivcap_service import getLogger, Service
+from ivcap_service import getLogger, Service, JobContext
 from ivcap_ai_tool import start_tool_server, ToolOptions, ivcap_ai_tool, logging_init
 
 logging_init()
@@ -46,11 +46,12 @@ class Result(BaseModel):
     })
 
 @ivcap_ai_tool("/", opts=ToolOptions(tags=["Prime Checker"]))
-def is_prime(req: Request) -> Result:
+def is_prime(req: Request, jobCtxt: JobContext) -> Result:
     """
     Checks if a number is prime.
     """
     number = req.number
+    jobCtxt.report.step_started("main", f"Checking '{number}'")
     is_prime = True
     if number <= 1:
         is_prime = False
@@ -64,6 +65,7 @@ def is_prime(req: Request) -> Result:
                 is_prime = False
                 break
 
+    jobCtxt.report.step_finished("main", f"Is '{number}' a prime? {is_prime}")
     return Result(number=number, is_prime=is_prime)
 
 if __name__ == "__main__":

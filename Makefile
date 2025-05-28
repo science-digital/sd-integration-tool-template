@@ -1,8 +1,4 @@
 SERVICE_TITLE=AI tool to check for prime numbers
-SERVICE_NAME=is-prime-tool
-
-TOOL_FILE=tool-service.py
-IVCAP_SERVICE_FILE=service.json
 
 PROJECT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PORT=8078
@@ -12,8 +8,8 @@ SERVICE_URL=http://localhost:${PORT}
 include Makefile.common
 
 run:
-	env VERSION=$(VERSION) \
-		poetry run python ${PROJECT_DIR}/tool-service.py --port ${PORT}
+	poetry ivcap run -- --port ${PORT}
+
 
 test-local:
 	curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:${PORT}
@@ -29,21 +25,14 @@ test-job:
 	--data "{\"number\": 997}" \
 	${IVCAP_API}/1/services2/${SERVICE_ID}/jobs?with-result-content=true | jq
 
-test-job-minikube:
-	@$(MAKE) IVCAP_API=http://ivcap.minikube test-job
+service-id:
+	@echo ${SERVICE_ID}
 
-test-job-ivcap:
-	@$(MAKE) IVCAP_API=https://develop.ivcap.net test-job
+docker-build:
+	poetry ivcap docker-build
 
-install:
-	poetry lock
-
-docker-run: #docker-build
-	docker run -it \
-		-p ${PORT}:${PORT} \
-		--platform=linux/${TARGET_ARCH} \
-		--rm \
-		${DOCKER_NAME}_${TARGET_ARCH} --port ${PORT}
+docker-run:
+	poetry ivcap docker-run -- --port ${PORT}
 
 docker-debug: #docker-build
 	docker run -it \
@@ -52,6 +41,5 @@ docker-debug: #docker-build
 		--platform=linux/${TARGET_ARCH} \
 		--entrypoint bash \
 		${DOCKER_NAME}_${TARGET_ARCH}
-
 
 .PHONY: run

@@ -27,22 +27,34 @@ Below is an example of an agent query which uses this tool:
 }
 ```
 
+## Setup
+
+1. Clone the repository
+1. Install `poetry` and add the `ivcap` plugin:
+   ```bash
+   pip install poetry
+   poetry self add poetry-plugin-ivcap
+   ```
+1. Install the IVCAP cli tool. Instructions can be found [following this link](https://github.com/ivcap-works/ivcap-cli?tab=readme-ov-file#install-released-binaries).
+1. Install dependencies:
+   ```bash
+   poetry install --no-root
+   ```
+
 ## Test <a name="test"></a>
 
 In order to quickly test this service, follow these steps:
 
-* `pip install -r requirements.txt`
-* `make run`
+* `poetry ivcap run`
 
 ```
-% make run
-env VERSION="v0.1.0|edd6b1f|2025-05-22T18:42+10:00" \
-                poetry run python tool-service.py --port 8078
-2025-05-22T18:42:03+1000 INFO (app): AI tool to check for prime numbers - v0.1.0|edd6b1f|2025-05-22T18:42+10:00 - v0.7.1
-2025-05-22T18:42:03+1000 INFO (uvicorn.error): Started server process [85624]
-2025-05-22T18:42:03+1000 INFO (uvicorn.error): Waiting for application startup.
-2025-05-22T18:42:03+1000 INFO (uvicorn.error): Application startup complete.
-2025-05-22T18:42:03+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
+% poetry ivcap run
+Running: poetry run python tool-service.py --port 8078
+2025-05-28T16:24:14+1000 INFO (app): AI tool to check for prime numbers - 0.2.0|b4dbd44|2025-05-28T16:24:13+10:00 - v0.7.2
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Started server process [6311]
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Waiting for application startup.
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Application startup complete.
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
 ```
 
 In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
@@ -75,6 +87,57 @@ deployed to an IVCAP platform.
 
 > **Note:** Please make sure to have the IVCAP cli tool installed and configured. See the
 [ivcap-cli](https://github.com/ivcap-works/ivcap-cli) repo for more details.
+
+## Deploying to Platform
+
+Deployment is a three step process:
+1. Building and deploying the docker image
+1. Registering the service
+1. Registering the tool description
+
+### Building and Deploying the Docker image
+
+Run `poetry ivcap docker-publish` to publish the docker image
+
+```bash
+$ poetry ivcap docker-publish
+INFO: docker buildx build -t ivcap_python_ai_tool_template_arm64:b4dbd44 --platform linux/arm64 --build-arg VERSION=0.2.0|b4dbd44|2025-05-28T16:27:56+10:00 --build-arg BUILD_PLATFORM=linux/arm64 -f Dockerfile --load .
+[+] Building 0.9s (14/14) FINISHED
+=> [internal] load build definition from Dockerfile
+...
+INFO: Image size 342.2 MB
+Running: ivcap package push --force --local orffinder_amd64:5913361
+ Pushing orffinder_amd64:5913361 from local, may take multiple minutes depending on the size of the image ...
+...
+ 45a06508-5c3a-4678-8e6d-e6399bf27538/orffinder_amd64:5913361 pushed
+INFO: package push completed successfully
+```
+
+### Registering the service
+
+Run `poetry ivcap service-register` to register the service
+
+```
+$ poetry ivcap service-register
+Running: ivcap package list orffinder_amd64:5913361
+Running: poetry run python tool-service.py --print-service-description
+Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.open.metadata urn:ivcap:service:5a4f9c92-cbf9-5251-bd35-4568906405ba -f /tmp/tmpt9grzxo8
+INFO: service definition successfully uploaded - urn:ivcap:aspect:f6317920-2e7d-4a60-ae38-f9cc64e32649
+```
+
+### Register the AI Tool Description
+
+Run `poetry ivcap tool-register` to register the tool description used by the AI agents.
+
+```
+$ poetry ivcap tool-register
+Running: poetry run python tool-service.py --print-tool-description
+Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.open.metadata urn:ivcap:service:5a4f9c92-cbf9-5251-bd35-4568906405ba -f /tmp/tmp3089n2_e
+INFO: tool description successfully uploaded - urn:ivcap:aspect:40fe880a-acdf-466e-a2ad-7d7cecb817fe
+```
+
+========
+
 
 The following [Makefile](./Makefile) targets have been provided
 
