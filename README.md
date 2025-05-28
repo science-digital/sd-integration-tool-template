@@ -101,15 +101,15 @@ Run `poetry ivcap docker-publish` to publish the docker image
 
 ```bash
 $ poetry ivcap docker-publish
-INFO: docker buildx build -t ivcap_python_ai_tool_template_arm64:b4dbd44 --platform linux/arm64 --build-arg VERSION=0.2.0|b4dbd44|2025-05-28T16:27:56+10:00 --build-arg BUILD_PLATFORM=linux/arm64 -f Dockerfile --load .
+INFO: docker buildx build -t ivcap_python_ai_tool_template_amd64:9d0abdf --platform linux/amd64 --build-arg VERSION=0.2.0|b4dbd44|2025-05-28T16:27:56+10:00 --build-arg BUILD_PLATFORM=linux/amd64 -f Dockerfile --load .
 [+] Building 0.9s (14/14) FINISHED
 => [internal] load build definition from Dockerfile
 ...
 INFO: Image size 342.2 MB
-Running: ivcap package push --force --local orffinder_amd64:5913361
- Pushing orffinder_amd64:5913361 from local, may take multiple minutes depending on the size of the image ...
+Running: ivcap package push --force --local ivcap_python_ai_tool_template_amd64:9d0abdf
+ Pushing ivcap_python_ai_tool_template_amd64:9d0abdf from local, may take multiple minutes depending on the size of the image ...
 ...
- 45a06508-5c3a-4678-8e6d-e6399bf27538/orffinder_amd64:5913361 pushed
+ 45a06508-5c3a-4678-8e6d-e6399bf27538/ivcap_python_ai_tool_template_amd64:9d0abdf pushed
 INFO: package push completed successfully
 ```
 
@@ -136,56 +136,28 @@ Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.open.metadata urn:i
 INFO: tool description successfully uploaded - urn:ivcap:aspect:40fe880a-acdf-466e-a2ad-7d7cecb817fe
 ```
 
-========
+### Test deployed Service
 
-
-The following [Makefile](./Makefile) targets have been provided
-
-* `make docker-build`: Build the docker container
-* `make service-register`: Published the container as well as registers the service
-
-You may first want to locally test the build and execution of the docker container.
+Run `make test-job` to execute the service to check if '997' is a prime number (`{"number": 997}`):
 
 ```
-% make docker-build
-Building docker image 'is_prime_tool-arm64'
-docker build \
-                -t is_prime_tool-arm64 \
-                --platform=linux/arm64 \
-                --build-arg VERSION="|6f2ada2|2025-03-05T14:06+11:00" \
-                -f .../Dockerfile \
-                ...
-```
-
-and then test it by first starting the docker service:
-
-```
-% make docker-run
-Building docker image 'is_prime_tool-arm64'
-docker build \
-  ...
-docker run -it \
-                -p 8078:8078 \
-                --platform=linux/arm64 \
-                --rm \
-                is_prime_tool-arm64 --port 8078
-2025-05-22T08:43:39+0000 INFO (app): AI tool to check for prime numbers - v0.1.0|edd6b1f|2025-05-22T18:39+10:00 - v0.7.1
-2025-05-22T08:43:39+0000 INFO (uvicorn.error): Started server process [1]
-2025-05-22T08:43:39+0000 INFO (uvicorn.error): Waiting for application startup.
-2025-05-22T08:43:39+0000 INFO (uvicorn.error): Application startup complete.
-2025-05-22T08:43:39+0000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
-```
-
-and then in a different terminal to already above mentioned:
-```
-% make test-local
-curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8078
-HTTP/1.1 200 OK
-...
-content-length: 67
-content-type: application/json
-
-{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}%
+% make test-job
+TOKEN=eyJhbGciOiJSUzI1Ni.. \
+        curl \
+        -X POST \
+        -H "content-type: application/json" \
+        -H "Timeout: 20" \
+        -H "Authorization: Bearer $TOKEN" \
+        --data "{\"number\": 997}" \
+        https://develop.ivcap.net/1/services2/urn:ivcap:service:3c51bd86-fd86-53bc-a932-91ff3a1e2fee/jobs?with-result-content=true | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    82  100    67    0    15      3      0  0:00:22  0:00:18  0:00:04    18
+{
+  "$schema": "urn:sd:schema.is-prime.1",
+  "number": 997,
+  "is_prime": true
+}
 ```
 
 ## Implementation <a name="implementation"></a>
