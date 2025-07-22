@@ -1,5 +1,8 @@
 # IVCAP "AI Tool" Demo
 
+> __Note:__ This is template repository to help you get started with building a new service for the IVCAP platform. If you are still unfamilar with
+IVCAP, you may want to first checkout the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onology-term-mapper) tutorial.
+
 This repo template contains an implementation of a
 basic _AI Agent Tool_ usable for various agent frameworks
 like [crewAI](https://www.crewai.com).
@@ -60,14 +63,17 @@ Running: poetry run python tool-service.py --port 8078
 In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
 ```
 % make test-local
-curl -i -X POST -H "content-type: application/json" --data "{\"number\": 997}" http://localhost:8078
+curl -i -X POST \
+    -H "content-type: application/json" \
+    --data @tests/request.json \
+    http://localhost:8078
 HTTP/1.1 200 OK
-date: Thu, 22 May 2025 08:42:39 GMT
+date: Tue, 22 Jul 2025 06:32:39 GMT
 server: uvicorn
-job-id: urn:ivcap:job:1f036e8b-87d0-690a-b52a-7fc7a4ea5307
+job-id: urn:ivcap:job:1f066c5a-a3b4-6f84-a5f7-9eae9cc90b25
 content-length: 67
 content-type: application/json
-ivcap-ai-tool-version: 0.7.1
+ivcap-ai-tool-version: 0.7.15
 
 {"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
 ```
@@ -90,73 +96,32 @@ deployed to an IVCAP platform.
 
 ## Deploying to Platform
 
+> For a more in-depth description, please refer to [Step 8: Deploying to IVCAP](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-8-deploying-to-ivcap-) in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onology-term-mapper) tutorial.
+
 Deployment is a three step process:
 1. Building and deploying the docker image
 1. Registering the service
 1. Registering the tool description
 
-### Building and Deploying the Docker image
-
-Run `poetry ivcap docker-publish` to publish the docker image
-
-```bash
-$ poetry ivcap docker-publish
-INFO: docker buildx build -t ivcap_python_ai_tool_template_amd64:9d0abdf --platform linux/amd64 --build-arg VERSION=0.2.0|b4dbd44|2025-05-28T16:27:56+10:00 --build-arg BUILD_PLATFORM=linux/amd64 -f Dockerfile --load .
-[+] Building 0.9s (14/14) FINISHED
-=> [internal] load build definition from Dockerfile
-...
-INFO: Image size 342.2 MB
-Running: ivcap package push --force --local ivcap_python_ai_tool_template_amd64:9d0abdf
- Pushing ivcap_python_ai_tool_template_amd64:9d0abdf from local, may take multiple minutes depending on the size of the image ...
-...
- 45a06508-5c3a-4678-8e6d-e6399bf27538/ivcap_python_ai_tool_template_amd64:9d0abdf pushed
-INFO: package push completed successfully
-```
-
-### Registering the service
-
-Run `poetry ivcap service-register` to register the service
+All this can be accomplished with a single command:
 
 ```
-$ poetry ivcap service-register
-Running: ivcap package list orffinder_amd64:5913361
-Running: poetry run python tool-service.py --print-service-description
-Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.open.metadata urn:ivcap:service:5a4f9c92-cbf9-5251-bd35-4568906405ba -f /tmp/tmpt9grzxo8
-INFO: service definition successfully uploaded - urn:ivcap:aspect:f6317920-2e7d-4a60-ae38-f9cc64e32649
+poetry ivcap deploy
 ```
 
-### Register the AI Tool Description
-
-Run `poetry ivcap tool-register` to register the tool description used by the AI agents.
-
-```
-$ poetry ivcap tool-register
-Running: poetry run python tool-service.py --print-tool-description
-Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.open.metadata urn:ivcap:service:5a4f9c92-cbf9-5251-bd35-4568906405ba -f /tmp/tmp3089n2_e
-INFO: tool description successfully uploaded - urn:ivcap:aspect:40fe880a-acdf-466e-a2ad-7d7cecb817fe
-```
 
 ### Test deployed Service
 
-Run `make test-job` to execute the service to check if '997' is a prime number (`{"number": 997}`):
+Run `poetry ivcap job-exec tests/request.json` to execute the service to check if '997' is a prime number (`{"number": 997}`):
 
 ```
-% make test-job
-TOKEN=eyJhbGciOiJSUzI1Ni.. \
-        curl \
-        -X POST \
-        -H "content-type: application/json" \
-        -H "Timeout: 20" \
-        -H "Authorization: Bearer $TOKEN" \
-        --data "{\"number\": 997}" \
-        https://develop.ivcap.net/1/services2/urn:ivcap:service:3c51bd86-fd86-53bc-a932-91ff3a1e2fee/jobs?with-result-content=true | jq
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    82  100    67    0    15      3      0  0:00:22  0:00:18  0:00:04    18
+% poetry ivcap job-exec tests/request.json
+...
+Creating job 'https://develop.ivcap.net/1/services2/urn:ivcap:service:3c51bd86-..../jobs'
 {
   "$schema": "urn:sd:schema.is-prime.1",
-  "number": 997,
-  "is_prime": true
+  "is_prime": true,
+  "number": 997
 }
 ```
 

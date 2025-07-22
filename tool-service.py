@@ -11,15 +11,14 @@ logger = getLogger("app")
 service = Service(
     name="AI tool to check for prime numbers",
     contact={
-        "name": "Max Ott",
-        "email": "max.ott@data61.csiro.au",
+        "name": "Your Name",
+        "email": "your.name@data61.csiro.au",
     },
     license={
         "name": "MIT",
         "url": "https://opensource.org/license/MIT",
     },
 )
-
 
 class Request(BaseModel):
     jschema: str = Field("urn:sd:schema.is-prime.request.1", alias="$schema")
