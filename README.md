@@ -1,3 +1,67 @@
+# Sciansa Tool Integration
+
+If you are new to development for Sciansa see (https://github.com/csiro-internal/sciansa-integration) for higher level
+topics.
+
+
+# Design
+
+Before integrating your tool into Sciansa make sure you cosider how your tool will fit into the system architecture.
+Ultimately Sciansa is a modular system with each unit having inputs and outputs. How well you define your tools
+abstraction and the precision of the inputs and outputs for your tool module will effect how useful your tool is within
+the Sciansa ecosystem. Higher level modular design principles can be found in
+(https://github.com/csiro-internal/sciansa-integration).
+
+
+# Beginners
+
+If you are just starting out it is recommended that you use this repo as a template to guide your development. This repo
+is a GitHub template ... explain how to use GitHub template.
+
+
+# Technologies
+
+These are the technologies that you will need to use to integrate your tool into Sciansa:
+
+The following matrix defines the technologies ... to integrate your tool. If you are starting from scratch it is
+recommended that you use the default options. If you are integrating an existing tool the matrix highlights
+compaitability.
+
+Type                     | Technology | New Project  | Existing Compatability
+-------------------------|------------|--------------|-------------------------
+Language                 | Python     | Mandtory     | Mandatory
+Library                  | Pydantic   | Madatory     | Mandatory
+Test Framework           | Unknown    | Recommended  | TBA - TODO
+Build System             | Make       | TODO Replace | TODO Replace
+Dependency Managment     | Poetry     | Recommened   | Recommended but optional
+Deployment               | Docker     | Mandatory    | Mandatory
+Infrastructure Framework | IVCAP      | Mandatory    | Mandatory
+
+
+If you are not familiar with IVCAP the best brief introduction can be found in the IVCAP section of the [Sciansa
+Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP).
+
+
+TODO In Progress:
+Should we do an active deployment first? Then work backwards testing locally and then updating....I think that could
+work as a model. It's what I'd want to do if I were developing.
+
+
+# Local Development / Testing.
+
+# Remote Deployment
+
+# CI
+
+
+
+
+
+
+-----
+
+Old readme follows. To remove at some point in the future.
+
 # IVCAP "AI Tool" Demo
 
 > __Note:__ This is template repository to help you get started with building a new service for the IVCAP platform. If you are still unfamilar with
