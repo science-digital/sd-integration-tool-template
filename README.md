@@ -49,13 +49,24 @@ work as a model. It's what I'd want to do if I were developing.
 
 # Local Development / Testing.
 
+- TODO: Explain local development and testing workflow.
+
 # Remote Deployment
 
-# CI
+There are 2 options for remote deployment:
 
+| | |
+|---------------------------------|-------------------------------------------|
+| Automated deployment (Prefered) | - Requirment: All code / models pushed to github repo. </br> - Runs an automated job to build and deploy the container. </br> Advantage: Reproducable |
+| Manual deployment               | - Requirement: Developer must understand deployment process. - You manually build and upload your tool. |
 
+## Automated Deployment
 
+- TODO
 
+## Manual Deployment
+
+- TODO
 
 
 -----
