@@ -6,7 +6,7 @@ topics.
 
 # Design
 
-Before integrating your tool into Sciansa make sure you cosider how your tool will fit into the system architecture.
+Before integrating your tool into Sciansa make sure you consider how your tool will fit into the system architecture.
 Ultimately Sciansa is a modular system with each unit having inputs and outputs. How well you define your tools
 abstraction and the precision of the inputs and outputs for your tool module will effect how useful your tool is within
 the Sciansa ecosystem. Higher level modular design principles can be found in
@@ -17,6 +17,18 @@ the Sciansa ecosystem. Higher level modular design principles can be found in
 
 If you are just starting out it is recommended that you use this repo as a template to guide your development. This repo
 is a GitHub template ... explain how to use GitHub template.
+
+This guide targets developers who want to integrate classical tools with well defined inputs and outputs. If you want to
+support an agent interaction pattern see the
+[Hybrid section in the Sciansa Docs](https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#hybrid-advanced)
+
+
+# Assessing Integration Complexity
+
+The following list will help you to identify how complex it will be to integrate your tool with Sciansa:
+- Is the tool XXX or does the tool maintain an internal state?
+- Is the tool compaitable with the Sciansa dependency set? See: [Technologies](#technologies)
+- TODO: Extend this list.
 
 
 # Technologies
