@@ -41,10 +41,10 @@ The following list will help you to identify how complex it will be to integrate
   - Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs
     and outputs as parameters (rather then hard coded files) are easier to integrate.
 - Extend This List: Thought that your tool would be easy to integrate based on the above list and then found it
-        harder then you expected?
-        - Please reach out for help and support.
-        - Please make sure this list is updated to reflect the additional constraints that made the integration more
-          complex.
+                    harder then you expected?
+  - Please reach out for help and support.
+  - Please make sure this list is updated to reflect the additional constraints that made the integration more
+    complex.
 
 
 # Technologies
