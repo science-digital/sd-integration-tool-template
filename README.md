@@ -3,8 +3,8 @@
 If you are new to development for Sciansa see (https://github.com/csiro-internal/sciansa-integration) for higher level
 topics.
 
-This document is currently in the process of being updated. If you can revert to the original version be jumping to
-[IVCAP Too Demo](#ivcap-ai-tool-demo).
+This document is currently in the process of being updated. If needed you can revert to the original version be jumping
+to [IVCAP Too Demo](#ivcap-ai-tool-demo).
 
 
 # Design
