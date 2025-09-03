@@ -40,7 +40,7 @@ The following list will help you to identify how complex it will be to integrate
 - **Resources:** What are the compute resources required?
   - If your tool requires subtaintial compute or GPU resources talk with the Sciansa team in the first instance to see
     if your compute requirements can be accomdated by the platform.
-- Inputs and Outputs: What are the expetations on the Inputs and Outputs for your tool?
+- **Inputs and Outputs:** What are the expetations on the Inputs and Outputs for your tool?
   - Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs
     and outputs as parameters (rather then hard coded files) are easier to integrate.
 - **Extend This List:** Thought that your tool would be easy to integrate based on the above list and then found it
