@@ -3,6 +3,9 @@
 If you are new to development for Sciansa see (https://github.com/csiro-internal/sciansa-integration) for higher level
 topics.
 
+This is the most basic beginner tutorial (akin to Hello World!). If you want a more advanced tutorial see the additional
+tutorials listed here https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading .
+
 This document is currently in the process of being updated. If needed you can revert to the original version be jumping
 to [IVCAP Tool Demo](#ivcap-ai-tool-demo).
 
@@ -104,6 +107,12 @@ There are 2 options for remote deployment:
 
 - TODO
 
+
+# Next Steps
+
+Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
+- (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
+- (Tutorials and Examples)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading]
 
 -----
 
