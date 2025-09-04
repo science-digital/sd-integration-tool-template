@@ -33,30 +33,33 @@ support an agent interaction pattern see the
 
 The following list will help you to identify how complex it will be to integrate your tool with Sciansa:
 
-**Dependencies:**  
-How well do you understand your dependencies? Have you tried to put your technology in a Docker container?  
+**Dependencies:** \
+How well do you understand your dependencies? Have you tried to put your technology in a Docker container? \
 Tools with well understood dependencies or have been containerised before are easier to integrate.
 
-**Dependency Compaitability:**  
-Is the tool compaitable with the Sciansa dependency set? See: [Technologies](#technologies)  
-Identify any significant incompaitabilities between the dependencies used by Sciansa and the technologies that you
-    use.
+How big are your dependencies?
+This include everything that needs to be packaged to make your tool work (everything beyond the inputs and outputs).
 
-**State:**  
-Does the tool maintain an internal state or is is stateless?  
+**Dependency Compaitability:** \
+Is the tool compaitable with the Sciansa dependency set? See: [Technologies](#technologies) \
+Identify any significant incompaitabilities between the dependencies used by Sciansa and the technologies that you use.
+
+**State:** \
+Does the tool maintain an internal state or is is stateless? \
 Stateless tools are easier to integrate then tools that require state preservation between calls.
 
-**Resources:**  
-What are the compute resources required?  
+**Resources:** \
+What are the compute resources required? \
 If your tool requires subtaintial compute or GPU resources talk with the Sciansa team in the first instance to see if your compute requirements can be accomdated by the platform.
 
-**Inputs and Outputs:**  
-What are the expetations on the Inputs and Outputs for your tool?  
+**Inputs and Outputs:** \
+What are the expectations on the Inputs and Outputs for your tool? \
+What is the order of magnitude of data required as inputs and outputs for your tool(s) and where are they stored? \
 Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs and outputs as parameters (rather then hard coded files) are easier to integrate.
 
-**Extend This List:**  
-Thought that your tool would be easy to integrate based on the above list and then found it harder then you expected?  
-Please reach out for help and support.  
+**Extend This List:** \
+Thought that your tool would be easy to integrate based on the above list and then found it harder then you expected? \
+Please reach out for help and support. \
 Also, please make update this list to reflect the additional constraints that made the integration more complex.
 
 
