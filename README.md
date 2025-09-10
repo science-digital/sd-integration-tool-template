@@ -110,6 +110,16 @@ $ poetry ivcap version
 $ ./ivcap --version
 # Expect: ivcap version 0.41.7|c32cf2b|2025-07-02T00:12:10Z
 
+$ ivcap context get
+# Expect:
+# +-------------+---------------------------------------------------------+
+# | Name        | sd-dev                                                  |
+# | URL         | https://develop.ivcap.net                               |
+# | Account ID  | urn:ivcap:account:00000000-0000-0000-0000-000000000000  |
+# | Provider ID | urn:ivcap:provider:00000000-0000-0000-0000-000000000000 |
+# | Authorised  | yes, refreshing after 01 Jan 25 12:34 AEST              |
+# +-------------+---------------------------------------------------------+
+
 $ docker --version
 # Expect: Docker version 28.1.1+1, build 068a01e
 
