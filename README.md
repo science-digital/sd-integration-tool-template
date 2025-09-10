@@ -90,6 +90,8 @@ Developer Documentation](https://github.com/csiro-internal/sciansa-integration#I
 
 # Local Development / Testing
 
+## Install Dependencies:
+
 - [Install Git](https://git-scm.com/downloads)
 - [Install IVCAP CLI](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-2-install-ivcap-cli-tool)
 - [Install Poetry](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-1-install-poetry-and-ivcap-plugin)
@@ -122,7 +124,8 @@ $ docker run hello-world
 # Hello from Docker!
 # ...
 ```
-- Build the template:
+
+## Build Template:
 ```
 $ poetry ivcap docker-build
 # Expect:
@@ -130,7 +133,9 @@ $ poetry ivcap docker-build
 # ...
 # INFO: Docker build completed successfully
 ```
-- Test the build:
+
+## Test Build:
+
 ```
 TODO
 ```
