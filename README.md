@@ -69,15 +69,15 @@ Also, please make update this list to reflect the additional constraints that ma
 
 These are the technologies that you will need to use to integrate your tool into Sciansa:
 
-The following matrix defines the technologies ... to integrate your tool. If you are starting from scratch it is
-recommended that you use the default options. If you are integrating an existing tool the matrix highlights
-compaitability.
+The following matrix defines the technologies you will need to use to integrate your tool. If you are starting from
+scratch it is recommended that you use the default options. If you are integrating an existing tool the matrix
+highlights compaitability.
 
 Type                     | Technology | New Project  | Existing Compatability
 -------------------------|------------|--------------|-------------------------
 Language                 | Python     | Mandtory     | Mandatory
 Library                  | Pydantic   | Madatory     | Mandatory
-Test Framework           | Unknown    | Recommended  | TBA - TODO
+Test Framework           | Unknown    | Recommended  | Recommended but optional
 Build System             | Make       | TODO Replace | TODO Replace
 Dependency Managment     | Poetry     | Recommened   | Recommended but optional
 Deployment               | Docker     | Mandatory    | Mandatory
