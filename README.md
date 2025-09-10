@@ -6,7 +6,7 @@ topics.
 This is the most basic beginner tutorial (akin to Hello World!). If you want a more advanced tutorial see the additional
 tutorials listed here https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading .
 
-This document is currently in the process of being updated. If needed you can revert to the original version be jumping
+This document is currently in the process of being updated. If needed you can revert to the original version by jumping
 to [IVCAP Tool Demo](#ivcap-ai-tool-demo).
 
 
