@@ -88,13 +88,55 @@ If you are not familiar with IVCAP the best brief introduction can be found in t
 Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP).
 
 
-_TODO In Progress:
-Should we do an active deployment first? Then work backwards testing locally and then updating....I think that could work as a model. It's what I'd want to do if I were developing._
+# Local Development / Testing
 
-# Local Development / Testing.
+- [Install Git](https://git-scm.com/downloads)
+- [Install IVCAP CLI](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-2-install-ivcap-cli-tool)
+- [Install Poetry](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-1-install-poetry-and-ivcap-plugin)
+- [Install Docker](https://docs.docker.com/engine/install/)
+- Test Install with:
+```
+$ git version
+# Expect: git version 2.43.0
+
+$ poetry --version
+# Expect: Poetry (version 2.1.4)
+
+$ poetry ivcap version
+# Expect: IVCAP plugin (version 0.5.2)
+
+$ ./ivcap --version
+# Expect: ivcap version 0.41.7|c32cf2b|2025-07-02T00:12:10Z
+
+$ docker --version
+# Expect: Docker version 28.1.1+1, build 068a01e
+
+$ docker run hello-world
+# Expect:
+# Unable to find image 'hello-world:latest' locally
+# latest: Pulling from library/hello-world
+# 17eec7bbc9d7: Pull complete
+# Digest: sha256:a0dfb02aac212703bfcb339d77d47ec32c8706ff250850ecc0e19c8737b18567
+# Status: Downloaded newer image for hello-world:latest
+#
+# Hello from Docker!
+# ...
+```
+- Build the template:
+```
+$ poetry ivcap docker-build
+# Expect:
+# INFO: docker buildx build -t ivcap_python_ai_tool_template_x86_64: ...
+# ...
+# INFO: Docker build completed successfully
+```
+- Test the build:
+```
+TODO
+```
+
 
 # Deployment
-_TODO: Explain local development and testing workflow._
 
 It might seem odd to have deployment first. After all why deploy the template? The aim of this tutorial is to start with
 something that works and progressivly increase the understanding and customisation.
