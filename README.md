@@ -50,12 +50,14 @@ Stateless tools are easier to integrate then tools that require state preservati
 
 **Resources:** \
 What are the compute resources required? \
-If your tool requires subtaintial compute or GPU resources talk with the Sciansa team in the first instance to see if your compute requirements can be accomdated by the platform.
+If your tool requires subtaintial compute or GPU resources talk with the Sciansa team in the first instance to see if
+your compute requirements can be accomdated by the platform.
 
 **Inputs and Outputs:** \
 What are the expectations on the Inputs and Outputs for your tool? \
 What is the order of magnitude of data required as inputs and outputs for your tool(s) and where are they stored? \
-Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs and outputs as parameters (rather then hard coded files) are easier to integrate.
+Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs and
+outputs as parameters (rather then hard coded files) are easier to integrate.
 
 **Extend This List:** \
 Thought that your tool would be easy to integrate based on the above list and then found it harder then you expected? \
