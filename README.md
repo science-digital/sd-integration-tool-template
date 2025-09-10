@@ -157,9 +157,43 @@ $ poetry ivcap docker-build
 
 ## Test Build:
 
+In order to quickly test this service, follow these steps:
 ```
-TODO
+$ poetry ivcap run -- --port 8080
+# Expect:
+Running: poetry run python tool-service.py --port 8080
+2025-05-28T16:24:14+1000 INFO (app): AI tool to check for prime numbers - 0.2.0|b4dbd44|2025-05-28T16:24:13+10:00 - v0.7.2
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Started server process [6311]
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Waiting for application startup.
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Application startup complete.
+2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
+
+In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
+_TODO: Replace this step. Remove the need for make as a dependency, replace with Python (since its already a dependency)._
+_For now you will also need to make sure that you haev `make` installed as a dependency on your system._
+```
+$ make test-local
+# Expect:
+# curl -i -X POST \
+#     -H "content-type: application/json" \
+#     --data @tests/request.json \
+#     http://localhost:8078
+# HTTP/1.1 200 OK
+# date: Tue, 22 Jul 2025 06:32:39 GMT
+# server: uvicorn
+# job-id: urn:ivcap:job:1f066c5a-a3b4-6f84-a5f7-9eae9cc90b25
+# content-length: 67
+# content-type: application/json
+# ivcap-ai-tool-version: 0.7.15
+#
+# {"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
+```
+
+You can also verify the build and view the web service is available by navigating to
+[http://localhost:8080/api](http://localhost:8080/api). Here you will find the OpenAPI spec for the endpoints the
+service creates.
+<img src="openapi.png" width="400"/>
 
 
 # Deployment
@@ -242,43 +276,6 @@ Below is an example of an agent query which uses this tool:
    poetry install --no-root
    ```
 
-## Test <a name="test"></a>
-
-In order to quickly test this service, follow these steps:
-
-* `poetry ivcap run`
-
-```
-% poetry ivcap run
-Running: poetry run python tool-service.py --port 8078
-2025-05-28T16:24:14+1000 INFO (app): AI tool to check for prime numbers - 0.2.0|b4dbd44|2025-05-28T16:24:13+10:00 - v0.7.2
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Started server process [6311]
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Waiting for application startup.
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Application startup complete.
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8078 (Press CTRL+C to quit)
-```
-
-In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
-```
-% make test-local
-curl -i -X POST \
-    -H "content-type: application/json" \
-    --data @tests/request.json \
-    http://localhost:8078
-HTTP/1.1 200 OK
-date: Tue, 22 Jul 2025 06:32:39 GMT
-server: uvicorn
-job-id: urn:ivcap:job:1f066c5a-a3b4-6f84-a5f7-9eae9cc90b25
-content-length: 67
-content-type: application/json
-ivcap-ai-tool-version: 0.7.15
-
-{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
-```
-
-A more "web friendly" way is to open [http://localhost:8078/api](http://localhost:8078/api)
-
-<img src="openapi.png" width="400"/>
 
 ## Build & Deploy <a name="build"></a>
 
