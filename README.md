@@ -136,6 +136,17 @@ $ docker run hello-world
 ```
 
 ## Build Template:
+- Install Dependencies:
+```
+$ poetry install --no-root
+# Expect:
+# Installing dependencies from lock file
+#
+# Package operations: 74 installs, 0 updates, 0 removals
+#
+# - Installing ...
+```
+- Build:
 ```
 $ poetry ivcap docker-build
 # Expect:
