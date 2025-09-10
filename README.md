@@ -93,24 +93,29 @@ Should we do an active deployment first? Then work backwards testing locally and
 
 # Local Development / Testing.
 
+# Deployment
 _TODO: Explain local development and testing workflow._
 
-# Remote Deployment
+It might seem odd to have deployment first. After all why deploy the template? The aim of this tutorial is to start with
+something that works and progressivly increase the understanding and customisation.
 
 There are 2 options for remote deployment:
 
 | | |
 |---------------------------------|-------------------------------------------|
-| Automated deployment (Prefered) | - Requirment: All code / models pushed to github repo. </br> - Runs an automated job to build and deploy the container. </br> Advantage: Reproducable |
-| Manual deployment               | - Requirement: Developer must understand deployment process. - You manually build and upload your tool. |
+| Automated deployment (Prefered) | - Requirment: All code / models pushed to GitHub repo. </br> - Runs an automated job to build and deploy the container. </br> Advantage: Reproducable |
+| Manual deployment               | - Requirement: Developer must understand deployment process. </br> - You manually build and upload your tool. |
+
 
 ## Automated Deployment
 
-- TODO
+- _TODO: To Be Defined. Not yet implemented._
+
 
 ## Manual Deployment
 
-- TODO
+- Make sure that you have a local build see [](#local-development--testing).
+- _TODO: To Be Defined. Not yet implemented._
 
 
 # Next Steps
