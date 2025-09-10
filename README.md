@@ -198,6 +198,7 @@ $ make test-local
 You can also verify the build and view the web service is available by navigating to
 [http://localhost:8080/api](http://localhost:8080/api). Here you will find the OpenAPI spec for the endpoints the
 service creates.
+
 <img src="openapi.png" width="400"/>
 
 
