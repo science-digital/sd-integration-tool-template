@@ -117,7 +117,7 @@ There are 2 options for remote deployment:
 
 Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
 - (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
-- (Tutorials and Examples)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading]
+- (Example Integrations)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations]
 
 -----
 
