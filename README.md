@@ -9,6 +9,8 @@ tutorials listed here https://github.com/csiro-internal/sciansa-integration?tab=
 This document is currently in the process of being updated. If needed you can revert to the original version by jumping
 to [IVCAP Tool Demo](#ivcap-ai-tool-demo).
 
+Quick Start: Jump straight to [Local Development and Testing](#local-development-and-testing).
+
 
 # Design
 
@@ -88,9 +90,12 @@ If you are not familiar with IVCAP the best brief introduction can be found in t
 Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP).
 
 
-# Local Development / Testing
+# Local Development and Testing
 
-## Install Dependencies:
+We start by building the template as is to verify the development environment and start in a known good working state.
+
+
+## Install Development Dependencies:
 
 - [Install Git](https://git-scm.com/downloads)
 - [Install IVCAP CLI](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-2-install-ivcap-cli-tool)
@@ -107,7 +112,7 @@ $ poetry --version
 $ poetry ivcap version
 # Expect: IVCAP plugin (version 0.5.2)
 
-$ ./ivcap --version
+$ ivcap --version
 # Expect: ivcap version 0.41.7|c32cf2b|2025-07-02T00:12:10Z
 
 $ ivcap context get
