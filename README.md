@@ -238,20 +238,7 @@ Old readme follows. To remove at some point in the future.
 
 # IVCAP "AI Tool" Demo
 
-> __Note:__ This is template repository to help you get started with building a new service for the IVCAP platform. If you are still unfamilar with
-IVCAP, you may want to first checkout the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onology-term-mapper) tutorial.
-
-This repo template contains an implementation of a
-basic _AI Agent Tool_ usable for various agent frameworks
-like [crewAI](https://www.crewai.com).
-
-The actual tool implemented in ths repo provides a simple test if a provided
-number is a prime number or not.
-
-* [Use](#use)
-* [Test](#test)
-* [Build & Deploy](#build)
-* [Implementation](#implementation)
+The actual tool implemented in ths repo provides a simple test if a provided number is a prime number or not.
 
 ## Use <a name="test"></a>
 
@@ -267,21 +254,6 @@ Below is an example of an agent query which uses this tool:
   "verbose": true
 }
 ```
-
-## Setup
-
-1. Clone the repository
-1. Install `poetry` and add the `ivcap` plugin:
-   ```bash
-   pip install poetry
-   poetry self add poetry-plugin-ivcap
-   ```
-1. Install the IVCAP cli tool. Instructions can be found [following this link](https://github.com/ivcap-works/ivcap-cli?tab=readme-ov-file#install-released-binaries).
-1. Install dependencies:
-   ```bash
-   poetry install --no-root
-   ```
-
 
 ## Build & Deploy <a name="build"></a>
 
