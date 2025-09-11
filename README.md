@@ -1,15 +1,15 @@
 # Sciansa Tool Integration
 
-If you are new to development for Sciansa see (https://github.com/csiro-internal/sciansa-integration) for higher level
+If you are new to development for Sciansa see https://github.com/csiro-internal/sciansa-integration for higher level
 topics.
 
 This is the most basic beginner tutorial (akin to Hello World!). If you want a more advanced tutorial see the additional
 tutorials listed here https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading .
 
 This document is currently in the process of being updated. If needed you can revert to the original version by jumping
-to [IVCAP Tool Demo](#ivcap-ai-tool-demo).
+to https://github.com/ivcap-works/ivcap-python-ai-tool-template.
 
-Quick Start: Jump straight to [Local Development and Testing](#local-development-and-testing).
+**Quick Start:** Jump straight to [Local Development and Testing](#local-development-and-testing).
 
 
 # Design
@@ -18,7 +18,7 @@ Before integrating your tool into Sciansa make sure you consider how your tool w
 Ultimately Sciansa is a modular system with each unit having inputs and outputs. How well you define your tools
 abstraction and the precision of the inputs and outputs for your tool module will effect how useful your tool is within
 the Sciansa ecosystem. Higher level modular design principles can be found in
-(https://github.com/csiro-internal/sciansa-integration).
+[https://github.com/csiro-internal/sciansa-integration](https://github.com/csiro-internal/sciansa-integration).
 
 
 # Beginners
@@ -28,7 +28,7 @@ is a GitHub template __TODO explain how to use GitHub template.__
 
 This guide targets developers who want to integrate classical tools with well defined inputs and outputs. If you want to
 support an agent interaction pattern see the
-[Hybrid section in the Sciansa Docs](https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#hybrid-advanced)
+[Hybrid section in the Sciansa Integration Docs](https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#hybrid-advanced).
 
 
 # Assessing Integration Complexity
