@@ -1,7 +1,7 @@
 SERVICE_TITLE=AI tool to check for prime numbers
 
 PROJECT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-PORT=8078
+PORT=8080
 SERVICE_URL=http://localhost:${PORT}
 
 run:

@@ -183,7 +183,7 @@ $ make test-local
 # curl -i -X POST \
 #     -H "content-type: application/json" \
 #     --data @tests/request.json \
-#     http://localhost:8078
+#     http://localhost:8080
 # HTTP/1.1 200 OK
 # date: Tue, 22 Jul 2025 06:32:39 GMT
 # server: uvicorn
