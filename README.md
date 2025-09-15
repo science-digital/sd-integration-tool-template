@@ -254,6 +254,20 @@ Great you have completed the introductory tutorial. You may now want to look at 
 - (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
 - (Example Integrations)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations]
 
+
+
+# Maintainers Notes
+
+Here are some dot points to help future maintainers of this document and this repo:
+- **Intended Audience:**
+  - Assumed to have a competent understatanding of the tool they plan to integrate.
+  - Assumed to be a domain expert with competent level of programming profiecency. The assumption is that the developers
+    who want to integrate tools will have a resonable level of programming proficency, but will not necessarily be
+    professional programmers. They are likely to have deep expereince in tools sets and libraries they are familiar with
+    but may not have a deep understanding of tools and technologies across a broader development concepts (for example
+    they may not have experience with cloud infrustructure, Docker, JSON or web APIs).
+  - Assumed have a resonable familiarity with Python.
+
 -----
 
 Old readme follows. To remove at some point in the future.
