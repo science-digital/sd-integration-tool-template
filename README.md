@@ -212,6 +212,11 @@ $ make test-local
 # {"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
 ```
 
+The output from this command shows 3 things:
+- Shows the call that was made to the service.
+- Shows the HTTP responce we recieve from the platform.
+- Shows the data in the reponce we recieved from the platform (that 997 is prime).
+
 You can also verify the build and view the web service is available by navigating to
 [http://localhost:8080/api](http://localhost:8080/api). Here you will find the OpenAPI spec for the endpoints the
 service creates.
