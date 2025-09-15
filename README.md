@@ -143,6 +143,20 @@ $ docker run hello-world
 # ...
 ```
 
+
+## Default Functionality:
+
+The default functionality/operation that this template implements is to check whether a number is prime.
+
+|            | Description |
+|------------|-------------|
+| **Input**  | Integer     |
+| **Output** | Boolean indicating whether the input was prime. |
+
+This default functionality provides a simple and well understood operation that you can test with until you are ready to
+replace the logic with your own.
+
+
 ## Build Template:
 - Install Dependencies:
 ```
@@ -241,7 +255,6 @@ Old readme follows. To remove at some point in the future.
 
 # IVCAP "AI Tool" Demo
 
-The actual tool implemented in ths repo provides a simple test if a provided number is a prime number or not.
 
 ## Use <a name="test"></a>
 
