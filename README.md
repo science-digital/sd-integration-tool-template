@@ -263,14 +263,16 @@ Run `poetry ivcap job-exec tests/request.json` to execute the service to check i
 (`{"number": 997}`):
 
 ```
-% poetry ivcap job-exec tests/request.json
-...
-Creating job 'https://develop.ivcap.net/1/services2/urn:ivcap:service:3c51bd86-..../jobs'
-{
-  "$schema": "urn:sd:schema.is-prime.1",
-  "is_prime": true,
-  "number": 997
-}
+$ poetry ivcap job-exec tests/request.json
+# Expect:
+# ...
+# Creating job 'https://develop.ivcap.net/1/services2/urn:ivcap:service:.../jobs'
+# ...
+# "result-content": {
+#   "$schema": "urn:sd:schema.is-prime.1",
+#   "is_prime": true,
+#   "number": 997
+# },
 ```
 
 > For a more in-depth description of deployment, please refer to
