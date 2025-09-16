@@ -81,7 +81,7 @@ Language                 | Python     | Mandtory     | Mandatory
 Library                  | Pydantic   | Madatory     | Mandatory
 Test Framework           | Unknown    | Recommended  | Recommended but optional
 Build System             | Make       | TODO Replace | TODO Replace
-Dependency Managment     | Poetry     | Recommened   | Recommended but optional
+Dependency Managment     | Poetry     | Mandatory    | Mandatory
 Deployment               | Docker     | Mandatory    | Mandatory
 Infrastructure Framework | IVCAP      | Mandatory    | Mandatory
 
