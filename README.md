@@ -244,10 +244,6 @@ There are 2 options for remote deployment:
 
 ## Manual Deployment
 
-- Make sure that you have a local build see [](#local-development--testing).
-
-Before making a deployment you need to set the `SERVICE_TITLE`. You can update this value in the [Makefile](./Makefile).
-
 Deployment is a three step process:
 1. Building and deploying the docker image
 1. Registering the service
