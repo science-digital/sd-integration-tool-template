@@ -245,7 +245,41 @@ There are 2 options for remote deployment:
 ## Manual Deployment
 
 - Make sure that you have a local build see [](#local-development--testing).
-- _TODO: To Be Defined. Not yet implemented._
+
+Before making a deployment you need to set the `SERVICE_TITLE`. You can update this value in the [Makefile](./Makefile).
+
+Deployment is a three step process:
+1. Building and deploying the docker image
+1. Registering the service
+1. Registering the tool description
+
+All this can be accomplished with a single command:
+```
+poetry ivcap deploy
+```
+
+
+### Test deployed Service
+
+After you have deployed the service you can test the deployment using the following steps.
+
+Run `poetry ivcap job-exec tests/request.json` to execute the service to check if '997' is a prime number
+(`{"number": 997}`):
+
+```
+% poetry ivcap job-exec tests/request.json
+...
+Creating job 'https://develop.ivcap.net/1/services2/urn:ivcap:service:3c51bd86-..../jobs'
+{
+  "$schema": "urn:sd:schema.is-prime.1",
+  "is_prime": true,
+  "number": 997
+}
+```
+
+> For a more in-depth description of deployment, please refer to
+[Step 8: Deploying to IVCAP](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-8-deploying-to-ivcap-)
+in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onology-term-mapper) tutorial.
 
 
 # Next Steps
@@ -295,8 +329,6 @@ Below is an example of an agent query which uses this tool:
 The tool needs to be packed into a docker container, and the, together with an IVCAP service description
 deployed to an IVCAP platform.
 
-> **Important**: If you adopt this repo template, please make sure to first change the first two variables
-`SERVICE_NAME` and `SERVICE_TITLE` at the top of the [Makefile](./Makefile).
 
 
 > **Note:** Please make sure to have the IVCAP cli tool installed and configured. See the
@@ -304,34 +336,7 @@ deployed to an IVCAP platform.
 
 ## Deploying to Platform
 
-> For a more in-depth description, please refer to [Step 8: Deploying to IVCAP](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-8-deploying-to-ivcap-) in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onology-term-mapper) tutorial.
 
-Deployment is a three step process:
-1. Building and deploying the docker image
-1. Registering the service
-1. Registering the tool description
-
-All this can be accomplished with a single command:
-
-```
-poetry ivcap deploy
-```
-
-
-### Test deployed Service
-
-Run `poetry ivcap job-exec tests/request.json` to execute the service to check if '997' is a prime number (`{"number": 997}`):
-
-```
-% poetry ivcap job-exec tests/request.json
-...
-Creating job 'https://develop.ivcap.net/1/services2/urn:ivcap:service:3c51bd86-..../jobs'
-{
-  "$schema": "urn:sd:schema.is-prime.1",
-  "is_prime": true,
-  "number": 997
-}
-```
 
 ## Implementation <a name="implementation"></a>
 
