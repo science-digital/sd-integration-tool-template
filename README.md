@@ -61,6 +61,12 @@ What is the order of magnitude of data required as inputs and outputs for your t
 Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs and
 outputs as parameters (rather then hard coded files) are easier to integrate.
 
+**Configuration:** \
+How is the tool configured? \
+Are you able to supply a set of parameters or does the tool have a GUI or interactive workflow? \
+Tools that can be configured up front without requiring further interaction are easier to integrate then tools that
+need supervisory interactive configuration patterns.
+
 **Extend This List:** \
 Thought that your tool would be easy to integrate based on the above list and then found it harder then you expected? \
 Please reach out for help and support. \
