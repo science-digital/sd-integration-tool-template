@@ -38,7 +38,7 @@ The following list will help you to identify how complex it will be to integrate
 **Familiarity Sciansa Technologies** \
 How familiar are you with the technologies listed in the [Technologies](#technologies) section? \
 We are still working to understand our developer users better. Please let us know which technologies you are and aren't
-familar with so that we can improve our developer experience.
+familiar with so that we can improve our developer experience.
 
 **Dependencies:** \
 How well do you understand your dependencies? Have you tried to put your technology in a Docker container? \
@@ -47,24 +47,24 @@ Tools with well understood dependencies or have been containerised before are ea
 How big are your dependencies?
 This include everything that needs to be packaged to make your tool work (everything beyond the inputs and outputs).
 
-**Dependency Compaitability:** \
-Is the tool compaitable with the Sciansa dependency set? See: [Technologies](#technologies) \
-Identify any significant incompaitabilities between the dependencies used by Sciansa and the technologies that you use.
+**Dependency Compatibility:** \
+Is the tool compatible with the Sciansa dependency set? See: [Technologies](#technologies) \
+Identify any significant incompatibilities between the dependencies used by Sciansa and the technologies that you use.
 
 **State:** \
-Does the tool maintain an internal state or is is stateless? \
+Does the tool maintain an internal state or is it stateless? \
 Stateless tools are easier to integrate then tools that require state preservation between calls.
 
 **Resources:** \
 What are the compute resources required? \
-If your tool requires subtaintial compute or GPU resources talk with the Sciansa team in the first instance to see if
-your compute requirements can be accomdated by the platform.
+If your tool requires substantial compute or GPU resources talk with the Sciansa team in the first instance to see if
+your compute requirements can be accommodated by the platform.
 
 **Inputs and Outputs:** \
 What are the expectations on the Inputs and Outputs for your tool? \
 What is the order of magnitude of data required as inputs and outputs for your tool(s) and where are they stored? \
-Tools that can accomodate inputs and outputs in standardised formats and that can be written to take these inputs and
-outputs as parameters (rather then hard coded files) are easier to integrate.
+Tools that can accommodate inputs and outputs in standardised formats and that can be written to take these inputs and
+outputs as parameters (rather than hard coded files) are easier to integrate.
 
 **Configuration:** \
 How is the tool configured? \
@@ -84,16 +84,16 @@ These are the technologies that you will need to use to integrate your tool into
 
 The following matrix defines the technologies you will need to use to integrate your tool. If you are starting from
 scratch it is recommended that you use the default options. If you are integrating an existing tool the matrix
-highlights compaitability.
+highlights compatibility.
 
-Type                     | Technology | New Project  | Existing Compatability
+Type                     | Technology | New Project  | Existing Compatibility
 -------------------------|------------|--------------|-------------------------
-Source Code Managment    | Git        | Mandatory    | Mandatory
-Language                 | Python     | Mandtory     | Mandatory
-Library                  | Pydantic   | Madatory     | Mandatory
+Source Code Management   | Git        | Mandatory    | Mandatory
+Language                 | Python     | Mandatory     | Mandatory
+Library                  | Pydantic   | Mandatory     | Mandatory
 Test Framework           | Unknown    | Recommended  | Recommended but optional
 Build System             | Make       | TODO Replace | TODO Replace
-Dependency Managment     | Poetry     | Mandatory    | Mandatory
+Dependency Management    | Poetry     | Mandatory    | Mandatory
 Deployment               | Docker     | Mandatory    | Mandatory
 Infrastructure Framework | IVCAP      | Mandatory    | Mandatory
 
@@ -202,7 +202,7 @@ $ poetry ivcap docker-build
 Once the docker image has been built we can call the tool that we have packaged; supplying input data and then
 inspecting the result.
 
-The following command will start the tool models as a server which listens for incomming requests which supply the input
+The following command will start the tool models as a server which listens for incoming requests which supply the input
 data:
 ```
 $ poetry ivcap run -- --port 8080
@@ -215,10 +215,10 @@ Running: poetry run python tool-service.py --port 8080
 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-In a separate terminal, call the service via `make test-local` or if you are comfertable you can use your favorite http
+In a separate terminal, call the service via `make test-local` or if you are comfortable you can use your favourite http
 testing tool:
 _TODO: Replace this step. Remove the need for make as a dependency, replace with Python (since its already a dependency)._
-_For now you will also need to make sure that you haev `make` installed as a dependency on your system._
+_For now you will also need to make sure that you have `make` installed as a dependency on your system._
 ```
 $ make test-local
 # Expect:
@@ -239,8 +239,8 @@ $ make test-local
 
 The output from this command shows 3 things:
 - Shows the call that was made to the packaged tool (`curl ...`).
-- Shows the HTTP responce we recieve from the packaged tool (`HTTP...`).
-- Shows the data in the reponce we recieved from the packaged tool (that 997 is prime) (`{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}`).
+- Shows the HTTP response we receive from the packaged tool (`HTTP...`).
+- Shows the data in the response we received from the packaged tool (that 997 is prime) (`{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}`).
 
 Input and output data are encoded with JSON.
 
@@ -256,14 +256,14 @@ service creates if you are familiar with web APIs.
 Deploying makes the tool available from the Sciansa/IVCAP platform.
 
 It might seem odd to have deployment first. After all why deploy the template? The aim of this tutorial is to start with
-something that works and progressivly increase the understanding and customisation.
+something that works and progressively increase the understanding and customisation.
 
 There are 2 options for remote deployment:
 
 | | |
-|---------------------------------|-------------------------------------------|
-| Automated deployment (Prefered) | - Requirment: All code / models pushed to GitHub repo. </br> - Runs an automated job to build and deploy the container. </br> Advantage: Reproducable |
-| Manual deployment               | - Requirement: Developer must understand deployment process. </br> - You manually build and upload your tool. |
+|----------------------------------|-------------------------------------------|
+| Automated deployment (Preferred) | - Requirement: All code / models pushed to GitHub repo. </br> - Runs an automated job to build and deploy the container. </br> Advantage: Reproducible |
+| Manual deployment                | - Requirement: Developer must understand deployment process. </br> - You manually build and upload your tool. |
 
 
 ## Automated Deployment
@@ -273,7 +273,7 @@ There are 2 options for remote deployment:
 
 ## Manual Deployment
 
-Deployment is a multistep process run from a single command. As the process is a mutistep process you must verify that
+Deployment is a multistep process run from a single command. As the process is a multistep process you must verify that
 all of the intermediate steps indicated they completed successfully:
 ```
 $ poetry ivcap deploy
@@ -320,7 +320,7 @@ The input data that is supplied to the tool is in `tests/request.json`.
 
 The output from this command shows 3 things:
 - A job was created - that is the tool was scheduled to be run (`Creating job...`).
-- Shows the data in the reponce we recieved from the packaged tool (matches the data from the local run).
+- Shows the data in the response we received from the packaged tool (matches the data from the local run).
 
 > For a more in-depth description of deployment, please refer to
 [Step 8: Deploying to IVCAP](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-8-deploying-to-ivcap-)
@@ -333,9 +333,9 @@ in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onol
 
 `tool-service.py`: \
 **Service:** Defines service details. General information about your tool module. \
-**Request:** Input datastructure. The general format is key value pairs. Update to take the values that you need to
-supply to your tool. This is a Pydantic datastructure you can see the Pydantic docs if you need additional features. \
-**Result:** Output datastructure. Same as `Request`. \
+**Request:** Input data structure. The general format is key value pairs. Update to take the values that you need to
+supply to your tool. This is a Pydantic data structure you can see the Pydantic docs if you need additional features. \
+**Result:** Output data structure. Same as `Request`. \
 `@ivcap_ai_tool / def is_prime`: Defines the operation you provide. Update to provide your functionality.
 
 `pyproject.toml`: Project details and dependencies.
@@ -347,7 +347,7 @@ supply to your tool. This is a Pydantic datastructure you can see the Pydantic d
 Implements a simple http based service which provides a `POST /` service endpoint to test
 if the number contained in the request is a prime number or not.
 
-We first import a few library functionss and configure the logging system to use a more "machine" friendly format to
+We first import a few library functions and configure the logging system to use a more "machine" friendly format to
 simplify service monitoring on the platform.
 
 ```
@@ -362,7 +362,7 @@ logging_init()
 logger = getLogger("app")
 ```
 
-We then describe the service, who to contact and other useful information used whne deploying the service
+We then describe the service, who to contact and other useful information used when deploying the service
 
 ```
 service = Service(
@@ -433,10 +433,10 @@ Great you have completed the introductory tutorial. You may now want to look at 
 
 Here are some dot points to help future maintainers of this document and this repo:
 - **Intended Audience:**
-  - Assumed to have a competent understatanding of the tool they plan to integrate.
-  - Assumed to be a domain expert with competent level of programming profiecency. The assumption is that the developers
-    who want to integrate tools will have a resonable level of programming proficency, but will not necessarily be
-    professional programmers. They are likely to have deep expereince in tools sets and libraries they are familiar with
+  - Assumed to have a competent understanding of the tool they plan to integrate.
+  - Assumed to be a domain expert with competent level of programming proficiency. The assumption is that the developers
+    who want to integrate tools will have a reasonable level of programming proficiency, but will not necessarily be
+    professional programmers. They are likely to have deep experience in tools sets and libraries they are familiar with
     but may not have a deep understanding of tools and technologies across a broader development concepts (for example
-    they may not have experience with cloud infrustructure, Docker, JSON or web APIs).
-  - Assumed have a resonable familiarity with Python.
+    they may not have experience with cloud infrastructure, Docker, JSON or web APIs).
+  - Assumed have a reasonable familiarity with Python.
