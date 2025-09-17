@@ -409,7 +409,7 @@ if __name__ == "__main__":
     start_tool_server(service)
 ```
 
-## [resources.json](./resources.json)
+### [resources.json](./resources.json)
 
 This file contains the resource requirements for this tool. This will depend on the computational and memory
 requirements for the specific tool. If it is not provided a default will be used which is likely very similar
