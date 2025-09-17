@@ -16,8 +16,8 @@ to https://github.com/ivcap-works/ivcap-python-ai-tool-template.
 
 Before integrating your tool into Sciansa make sure you consider how your tool will fit into the system architecture.
 Ultimately Sciansa is a modular system with each unit having inputs and outputs. How well you define your tools
-abstraction and the precision of the inputs and outputs for your tool module will effect how useful your tool is within
-the Sciansa ecosystem. Higher level modular design principles can be found in
+abstraction and what you choose as the inputs and outputs for your tool module will effect how useful your tool is
+within the Sciansa ecosystem. Higher level modular design principles can be found in
 [https://github.com/csiro-internal/sciansa-integration](https://github.com/csiro-internal/sciansa-integration).
 
 
