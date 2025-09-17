@@ -86,16 +86,16 @@ The following matrix defines the technologies you will need to use to integrate 
 scratch it is recommended that you use the default options. If you are integrating an existing tool the matrix
 highlights compatibility.
 
-Type                     | Technology | New Project  | Existing Compatibility
--------------------------|------------|--------------|-------------------------
-Source Code Management   | Git        | Mandatory    | Mandatory
-Language                 | Python     | Mandatory     | Mandatory
-Library                  | Pydantic   | Mandatory     | Mandatory
-Test Framework           | Unknown    | Recommended  | Recommended but optional
-Build System             | Make       | TODO Replace | TODO Replace
-Dependency Management    | Poetry     | Mandatory    | Mandatory
-Deployment               | Docker     | Mandatory    | Mandatory
-Infrastructure Framework | IVCAP      | Mandatory    | Mandatory
+Type                     | Technology |
+-------------------------|------------|
+Source Code Management   | Git        |
+Language                 | Python     |
+Library                  | Pydantic   |
+Dependency Management    | Poetry     |
+Build System             | Poetry     |
+Deployment               | Docker     |
+Test Framework           | Make (Todo Replace) |
+Infrastructure Framework | IVCAP      |
 
 
 If you are not familiar with IVCAP the best brief introduction can be found in the IVCAP section of the [Sciansa
