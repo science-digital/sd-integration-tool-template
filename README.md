@@ -155,6 +155,9 @@ $ docker run hello-world
 # ...
 ```
 
+> **Note:** You can also see [ivcap-cli](https://github.com/ivcap-works/ivcap-cli) repo for more details about the
+IVCAP CLI tool.
+
 
 ## Default Functionality:
 
@@ -434,11 +437,3 @@ Here are some dot points to help future maintainers of this document and this re
     but may not have a deep understanding of tools and technologies across a broader development concepts (for example
     they may not have experience with cloud infrustructure, Docker, JSON or web APIs).
   - Assumed have a resonable familiarity with Python.
-
-
------
-
-Old readme follows. To remove at some point in the future.
-
-> **Note:** Please make sure to have the IVCAP cli tool installed and configured. See the
-[ivcap-cli](https://github.com/ivcap-works/ivcap-cli) repo for more details.
