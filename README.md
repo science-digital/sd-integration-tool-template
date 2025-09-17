@@ -333,7 +333,8 @@ in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onol
 
 `tool-service.py`: \
 **Service:** Defines service details. General information about your tool module. \
-**Request:** Input datastructure. The general format is key value pairs. Update to take the values that you need to supply to your tool. This is a Pydantic datastructure you can see the Pydantic docs if you need additional features. \
+**Request:** Input datastructure. The general format is key value pairs. Update to take the values that you need to
+supply to your tool. This is a Pydantic datastructure you can see the Pydantic docs if you need additional features. \
 **Result:** Output datastructure. Same as `Request`. \
 `@ivcap_ai_tool / def is_prime`: Defines the operation you provide. Update to provide your functionality.
 
@@ -346,7 +347,8 @@ in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onol
 Implements a simple http based service which provides a `POST /` service endpoint to test
 if the number contained in the request is a prime number or not.
 
-We first import a few library functionss and configure the logging system to use a more "machine" friendly format to simplify service monitoring on the platform.
+We first import a few library functionss and configure the logging system to use a more "machine" friendly format to
+simplify service monitoring on the platform.
 
 ```
 import math
@@ -376,7 +378,8 @@ service = Service(
 )
 ```
 
-The core function of the tool itself is accessible as `POST /`. The service signature should be kept as simple as possible.
+The core function of the tool itself is accessible as `POST /`. The service signature should be kept as simple as
+possible.
 We highly recommend defining the input as well as the result by a single `pydantic` model, respectively.
 However, for a tool to be properly used by an Agent, we should provide a
 comprehensive function documentation including the required parameters as well as the reply.
