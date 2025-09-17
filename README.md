@@ -83,6 +83,7 @@ highlights compaitability.
 
 Type                     | Technology | New Project  | Existing Compatability
 -------------------------|------------|--------------|-------------------------
+Source Code Managment    | Git        | Mandatory    | Mandatory
 Language                 | Python     | Mandtory     | Mandatory
 Library                  | Pydantic   | Madatory     | Mandatory
 Test Framework           | Unknown    | Recommended  | Recommended but optional
