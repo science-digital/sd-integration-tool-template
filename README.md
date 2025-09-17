@@ -264,14 +264,28 @@ There are 2 options for remote deployment:
 
 ## Manual Deployment
 
-Deployment is a three step process:
-1. Building and deploying the docker image
-1. Registering the service
-1. Registering the tool description
-
-All this can be accomplished with a single command:
+Deployment is a multistep process run from a single command. As the process is a mutistep process you must verify that
+all of the intermediate steps indicated they completed successfully:
 ```
-poetry ivcap deploy
+$ poetry ivcap deploy
+# Expect:
+# INFO: docker buildx build ...
+# ...
+# [+] Building ... FINISHED
+# ...
+#  Pushing ivcap_python_ai_tool_template_amd64 ...
+# ...
+# 00000000-0000-0000-0000-000000000000/ivcap_python_ai_tool_template_amd64:0000000 pushed
+# INFO: package push completed successfully
+# Running: ivcap package list ivcap_python_ai_tool_template_amd64:0000000
+# Running: ivcap context get account-id
+# Running: poetry run python tool-service.py --print-service-description
+# Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.base.metadata urn:ivcap:service:00000000-0000-0000-0000-000000000000 -f /tmp/tmp_n87c8lg
+# INFO: service definition successfully uploaded - urn:ivcap:aspect:00000000-0000-0000-0000-000000000000
+# Running: poetry run python tool-service.py --print-tool-description
+# Running: ivcap context get account-id
+# Running: ivcap aspect update --policy urn:ivcap:policy:ivcap.base.metadata urn:ivcap:service:00000000-0000-0000-0000-000000000000 -f /tmp/tmpbw10vbo_
+# INFO: tool description successfully uploaded - urn:ivcap:aspect:00000000-0000-0000-0000-000000000000
 ```
 
 
@@ -279,9 +293,7 @@ poetry ivcap deploy
 
 After you have deployed the service you can test the deployment using the following steps.
 
-Run `poetry ivcap job-exec tests/request.json` to execute the service to check if '997' is a prime number
-(`{"number": 997}`):
-
+Run `poetry ivcap job-exec tests/request.json` to execute the service to check if '997' is a prime number:
 ```
 $ poetry ivcap job-exec tests/request.json
 # Expect:
@@ -294,6 +306,12 @@ $ poetry ivcap job-exec tests/request.json
 #   "number": 997
 # },
 ```
+
+The input data that is supplied to the tool is in `tests/request.json`.
+
+The output from this command shows 3 things:
+- A job was created - that is the tool was scheduled to be run (`Creating job...`).
+- Shows the data in the reponce we recieved from the packaged tool (matches the data from the local run).
 
 > For a more in-depth description of deployment, please refer to
 [Step 8: Deploying to IVCAP](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-8-deploying-to-ivcap-)
