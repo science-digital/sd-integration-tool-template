@@ -318,12 +318,16 @@ The output from this command shows 3 things:
 in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onology-term-mapper) tutorial.
 
 
+# Updating the Template
+
+__TODO__
+
+
 # Next Steps
 
 Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
 - (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
 - (Example Integrations)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations]
-
 
 
 # Maintainers Notes
@@ -337,6 +341,7 @@ Here are some dot points to help future maintainers of this document and this re
     but may not have a deep understanding of tools and technologies across a broader development concepts (for example
     they may not have experience with cloud infrustructure, Docker, JSON or web APIs).
   - Assumed have a resonable familiarity with Python.
+
 
 -----
 
