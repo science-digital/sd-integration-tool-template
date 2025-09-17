@@ -164,7 +164,11 @@ replace the logic with your own.
 
 
 ## Build Template:
-- Install Dependencies:
+
+We start by building the template as is. This packages the code and dependencies into a docker image, that we can
+later run.
+
+- Install Template Specific Build Dependencies:
 ```
 $ poetry install --no-root
 # Expect:
@@ -186,7 +190,11 @@ $ poetry ivcap docker-build
 
 ## Test Build:
 
-In order to quickly test this service, follow these steps:
+Once the docker image has been built we can call the tool that we have packaged; supplying input data and then
+inspecting the result.
+
+The following command will start the tool models as a server which listens for incomming requests which supply the input
+data:
 ```
 $ poetry ivcap run -- --port 8080
 # Expect:
@@ -198,7 +206,8 @@ Running: poetry run python tool-service.py --port 8080
 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-In a separate terminal, call the service via `make test-local` or your favorite http testing tool:
+In a separate terminal, call the service via `make test-local` or if you are comfertable you can use your favorite http
+testing tool:
 _TODO: Replace this step. Remove the need for make as a dependency, replace with Python (since its already a dependency)._
 _For now you will also need to make sure that you haev `make` installed as a dependency on your system._
 ```
@@ -220,18 +229,22 @@ $ make test-local
 ```
 
 The output from this command shows 3 things:
-- Shows the call that was made to the service.
-- Shows the HTTP responce we recieve from the platform.
-- Shows the data in the reponce we recieved from the platform (that 997 is prime).
+- Shows the call that was made to the packaged tool (`curl ...`).
+- Shows the HTTP responce we recieve from the packaged tool (`HTTP...`).
+- Shows the data in the reponce we recieved from the packaged tool (that 997 is prime) (`{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}`).
+
+Input and output data are encoded with JSON.
 
 You can also verify the build and view the web service is available by navigating to
 [http://localhost:8080/api](http://localhost:8080/api). Here you will find the OpenAPI spec for the endpoints the
-service creates.
+service creates if you are familiar with web APIs.
 
 <img src="openapi.png" width="400"/>
 
 
 # Deployment
+
+Deploying makes the tool available from the Sciansa/IVCAP platform.
 
 It might seem odd to have deployment first. After all why deploy the template? The aim of this tutorial is to start with
 something that works and progressivly increase the understanding and customisation.
