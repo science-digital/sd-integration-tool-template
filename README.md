@@ -419,8 +419,8 @@ to this file.
 # Next Steps
 
 Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
-- (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
-- (Example Integrations)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations]
+- [Advanced tool tutorial](https://github.com/ivcap-works/gene-onology-term-mapper)
+- [Example Integrations](https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations)
 
 
 # Maintainers Notes
