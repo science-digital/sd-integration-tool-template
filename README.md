@@ -326,66 +326,17 @@ in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onol
 
 # Updating the Template
 
-__TODO__
+## Overview
 
+`tool-service.py`: \
+**Service:** Defines service details. General information about your tool module. \
+**Request:** Input datastructure. The general format is key value pairs. Update to take the values that you need to supply to your tool. This is a Pydantic datastructure you can see the Pydantic docs if you need additional features. \
+**Result:** Output datastructure. Same as `Request`. \
+`@ivcap_ai_tool / def is_prime`: Defines the operation you provide. Update to provide your functionality.
 
-# Next Steps
+`pyproject.toml`: Project details and dependencies.
 
-Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
-- (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
-- (Example Integrations)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations]
-
-
-# Maintainers Notes
-
-Here are some dot points to help future maintainers of this document and this repo:
-- **Intended Audience:**
-  - Assumed to have a competent understatanding of the tool they plan to integrate.
-  - Assumed to be a domain expert with competent level of programming profiecency. The assumption is that the developers
-    who want to integrate tools will have a resonable level of programming proficency, but will not necessarily be
-    professional programmers. They are likely to have deep expereince in tools sets and libraries they are familiar with
-    but may not have a deep understanding of tools and technologies across a broader development concepts (for example
-    they may not have experience with cloud infrustructure, Docker, JSON or web APIs).
-  - Assumed have a resonable familiarity with Python.
-
-
------
-
-Old readme follows. To remove at some point in the future.
-
-# IVCAP "AI Tool" Demo
-
-
-## Use <a name="test"></a>
-
-Below is an example of an agent query which uses this tool:
-```
-{
-  "$schema": "urn:sd-core:schema:llama-agent.request.1",
-  "name": "Agent query test",
-  "msg": "is 997 a prime number?",
-  "tools": [
-    "urn:sd-core:ai-tool:is_prime"
-  ],
-  "verbose": true
-}
-```
-
-## Build & Deploy <a name="build"></a>
-
-The tool needs to be packed into a docker container, and the, together with an IVCAP service description
-deployed to an IVCAP platform.
-
-
-
-> **Note:** Please make sure to have the IVCAP cli tool installed and configured. See the
-[ivcap-cli](https://github.com/ivcap-works/ivcap-cli) repo for more details.
-
-## Deploying to Platform
-
-
-
-## Implementation <a name="implementation"></a>
+## Implementation Details
 
 ### [tool-service.py](./tool-service.py)
 
@@ -463,3 +414,31 @@ if __name__ == "__main__":
 This file contains the resource requirements for this tool. This will depend on the computational and memory
 requirements for the specific tool. If it is not provided a default will be used which is likely very similar
 to this file.
+
+
+# Next Steps
+
+Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
+- (Advanced tool tutorial)[https://github.com/ivcap-works/gene-onology-term-mapper]
+- (Example Integrations)[https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations]
+
+
+# Maintainers Notes
+
+Here are some dot points to help future maintainers of this document and this repo:
+- **Intended Audience:**
+  - Assumed to have a competent understatanding of the tool they plan to integrate.
+  - Assumed to be a domain expert with competent level of programming profiecency. The assumption is that the developers
+    who want to integrate tools will have a resonable level of programming proficency, but will not necessarily be
+    professional programmers. They are likely to have deep expereince in tools sets and libraries they are familiar with
+    but may not have a deep understanding of tools and technologies across a broader development concepts (for example
+    they may not have experience with cloud infrustructure, Docker, JSON or web APIs).
+  - Assumed have a resonable familiarity with Python.
+
+
+-----
+
+Old readme follows. To remove at some point in the future.
+
+> **Note:** Please make sure to have the IVCAP cli tool installed and configured. See the
+[ivcap-cli](https://github.com/ivcap-works/ivcap-cli) repo for more details.
