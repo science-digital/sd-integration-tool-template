@@ -35,6 +35,11 @@ support an agent interaction pattern see the
 
 The following list will help you to identify how complex it will be to integrate your tool with Sciansa:
 
+**Familiarity Sciansa Technologies** \
+How familiar are you with the technologies listed in the [Technologies](#technologies) section? \
+We are still working to understand our developer users better. Please let us know which technologies you are and aren't
+familar with so that we can improve our developer experience.
+
 **Dependencies:** \
 How well do you understand your dependencies? Have you tried to put your technology in a Docker container? \
 Tools with well understood dependencies or have been containerised before are easier to integrate.
