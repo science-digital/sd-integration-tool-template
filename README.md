@@ -115,7 +115,7 @@ After installing the dependencies listed below you should be able to run the com
 section) to check the dependencies are installed correctly (versions may differ slightly).
 
 - [Install Git](https://git-scm.com/downloads)
-- [Install IVCAP CLI](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-2-install-ivcap-cli-tool-)
+- [Install and configure IVCAP CLI](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-2-install-ivcap-cli-tool-)
 - [Install Poetry and Poetry IVCAP Plugin](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-1-install-poetry-and-ivcap-plugin-)
 - [Install Docker](https://docs.docker.com/engine/install/)
 - Test Install with:
