@@ -182,8 +182,9 @@ replace the logic with your own.
 
 ## Build Template:
 
-We start by building the template as is. This packages the code and dependencies into a docker image, that we can
-later run.
+We start by building the template "as is". This packages the code and dependencies into a docker image. The docker image
+can be used to run the code with its dependencies both on your local machine and also from the Sciansa IVCAP
+infrustructure.
 
 - Install Template Specific Build Dependencies:
 ```
@@ -208,9 +209,9 @@ $ poetry ivcap docker-build
 ## Test Build:
 
 Once the docker image has been built we can call the tool that we have packaged; supplying input data and then
-inspecting the result.
+inspecting the result. Input and output data are encoded with JSON.
 
-The following command will start the tool models as a server which listens for incoming requests which supply the input
+The following command will start the tool model as a server which listens for incoming requests which supply the input
 data:
 ```
 $ poetry ivcap run -- --port 8080
@@ -223,8 +224,8 @@ Running: poetry run python tool-service.py --port 8080
 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-In a separate terminal, call the service via `make test-local` or if you are comfortable you can use your favourite http
-testing tool:
+In a separate terminal, call the service via `make test-local` which supplies the input data or if you are comfortable
+you can use your favourite http testing tool:
 _TODO: Replace this step. Remove the need for make as a dependency, replace with Python (since its already a dependency)._
 _For now you will also need to make sure that you have `make` installed as a dependency on your system._
 ```
@@ -250,7 +251,7 @@ The output from this command shows 3 things:
 - Shows the HTTP response we receive from the packaged tool (`HTTP...`).
 - Shows the data in the response we received from the packaged tool (that 997 is prime) (`{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}`).
 
-Input and output data are encoded with JSON.
+You can also see the input data that was supplied which is in [tests/request.json](tests/request.json).
 
 You can also verify the build and view the web service is available by navigating to
 [http://localhost:8080/api](http://localhost:8080/api). Here you will find the OpenAPI spec for the endpoints the
