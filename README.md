@@ -98,6 +98,9 @@ Test Framework           | Make (Todo Replace) |
 Infrastructure Framework | IVCAP      |
 
 
+IVCAP is the backend infrustructure that all Sciansa modules run on. If you have some familiarity with cloud
+infurstrucutre, IVCAP is a technology abstraction over the native cloud infrusture.
+
 If you are not familiar with IVCAP the best brief introduction can be found in the IVCAP section of the [Sciansa
 Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP).
 
