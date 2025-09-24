@@ -44,7 +44,7 @@ familiar with so that we can improve our developer experience.
 How well do you understand your dependencies? Have you tried to put your technology in a Docker container? \
 Tools with well understood dependencies or have been containerised before are easier to integrate.
 
-How big are your dependencies?
+How big are your dependencies? \
 This include everything that needs to be packaged to make your tool work (everything beyond the inputs and outputs).
 
 **Dependency Compatibility:** \
