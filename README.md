@@ -104,13 +104,15 @@ Developer Documentation](https://github.com/csiro-internal/sciansa-integration#I
 
 # Local Development and Testing
 
-We start by building the template as is to verify the development environment and start in a known good working state.
+We start by building the template "as is" to verify the development environment and start in a known good working state.
+Once you understand how to build, deploy and interact (provide inputs and retrieve outputs - both locally and on the
+deployed instance) you can progressively customise the template with your functionality.
 
 
 ## Install Development Dependencies:
 
-After installing the dependencies you should be able to run the commands provided to check the dependencies are
-correctly installed by verifying the expected output (versions may differ slightly).
+After installing the dependencies listed below you should be able to run the commands provided (in the "Test Install"
+section) to check the dependencies are installed correctly (versions may differ slightly).
 
 - [Install Git](https://git-scm.com/downloads)
 - [Install IVCAP CLI](https://github.com/ivcap-works/gene-onology-term-mapper?tab=readme-ov-file#step-2-install-ivcap-cli-tool-)
