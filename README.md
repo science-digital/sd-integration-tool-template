@@ -170,6 +170,7 @@ IVCAP CLI tool.
 ## Default Functionality:
 
 The default functionality/operation that this template implements is to check whether a number is prime.
+Input and output data are encoded with JSON.
 
 |            | Description |
 |------------|-------------|
@@ -180,11 +181,62 @@ This default functionality provides a simple and well understood operation that 
 replace the logic with your own.
 
 
-## Build Template:
+## Local Testing:
+
+We use docker to manage dependencies during deployment. A Docker image packages the code and its dependencies up into
+a light wieght virtual machine like environment. This is that package that is pushed to the Sciansa platform and used to
+run your code on the IVCAP infrustructure.
+
+There are 2 ways you can run your service locally for development and testing:
+- [Inside the container](#inside-the-containder)
+- [Outside the container](#outside-the-containder)
+
+### Inside the containder
+
+Testing your functionality inside the container has the advantage that it will run with the same environment that it
+will run on the Sciansa platform. From a development testing perspective the disadvantage of testing using the
+container is:
+- Longer build times. Meaning there is an increased lag when rapidly making changes. (The container needs to rebuilt
+each time you make updates.)
+- More opaque errors. Because the code is hosted in the container one step removed from the local environment it is
+harder to inspect the running code and see output messages.
+
+### Outside the container
+
+It is also possible to test the module locally outside the container (directly on your system). In this case you must
+have the dependencies installed (in a virtual environment) directly on your system. From a development testing
+perspective the disadvantage of testing outside the container is:
+- Environment may not be represenative of the final target environment. This is important for both checking that
+dependencies are specified correctly and also the areas that your module interacts with the system environment.
+
+### Recommended Development / Testing Methodology
+
+The recommended approach to development / testing is:
+1. Start with a working build.
+2. Make changes.
+3. Test locally outside the container (if making dependency changes also test inside the container).
+4. Iterate steps 2 / 3 to make your required changes.
+5. Test locally inside the container.
+6. Deploy remotely and test.
+
+The following sections will help you to understand how you can test locally both in and outside the container and then
+to deploy the container. It is recomended that you build and deploy the reposity "as is" in the first instance so that
+you start from a known good working state. Once you have:
+- Built and tested locally (outside the container).
+- Built and tested locally (inside the container).
+- Deployed and tested remotely on the Sciansa/IVCAP platform.
+you can the progressively update the template to import your functionality (testing incrementally as you go).
+
+
+## Build the Template:
 
 We start by building the template "as is". This packages the code and dependencies into a docker image. The docker image
 can be used to run the code with its dependencies both on your local machine and also from the Sciansa IVCAP
 infrustructure.
+
+Note: It is only necessary to build the container when you want to test locally inside the container (the container
+will also be built automatically as part of the deployment process). We explain this step up front so that we can
+explain local testing in and outside of the container in parralell to simplify the desciption.
 
 - Install Template Specific Build Dependencies:
 ```
@@ -209,19 +261,42 @@ $ poetry ivcap docker-build
 ## Test Build:
 
 Once the docker image has been built we can call the tool that we have packaged; supplying input data and then
-inspecting the result. Input and output data are encoded with JSON.
+inspecting the result.
+
+As discussed in the [Local Testing Section](#local-testing) we have the option of running the service either inside or
+outside the container. The steps and the process for testing the service inside or outside the container remain the
+same with the only change being how you invoke the service intially. It is suggested that you run through this section
+2 times, once trying out the "outside the container methodology" and then repeating with the "inside the container".
+Make sure to kill the service from the first methodology you try (and verify its not running) before you try the other
+methodology so there is no confusion on how you are running the service.
 
 The following command will start the tool model as a server which listens for incoming requests which supply the input
 data:
+
+**Outside The Container**
 ```
 $ poetry ivcap run -- --port 8080
 # Expect:
-Running: poetry run python tool-service.py --port 8080
-2025-05-28T16:24:14+1000 INFO (app): AI tool to check for prime numbers - 0.2.0|b4dbd44|2025-05-28T16:24:13+10:00 - v0.7.2
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Started server process [6311]
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Waiting for application startup.
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Application startup complete.
-2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+# Running: poetry run python tool-service.py --port 8080
+# 2025-05-28T16:24:14+1000 INFO (app): AI tool to check for prime numbers - 0.2.0|b4dbd44|2025-05-28T16:24:13+10:00 - v0.7.2
+# 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Started server process [6311]
+# 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Waiting for application startup.
+# 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Application startup complete.
+# 2025-05-28T16:24:14+1000 INFO (uvicorn.error): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+```
+
+**Inside The Container**
+```
+$ poetry ivcap docker-run -- --port 8080
+# Expect:
+# ...
+# INFO: docker run -it ... ivcap_python_ai_tool_template_x86_64 ...
+# ...
+# 2025-01-01T00:00:20+0000 INFO (app): AI tool to check for prime numbers - ...
+# 2025-01-01T00:00:20+0000 INFO (uvicorn): Started server process [1]
+# 2025-01-01T00:00:20+0000 INFO (uvicorn): Waiting for application startup.
+# 2025-01-01T00:00:20+0000 INFO (uvicorn): Application startup complete.
+# 2025-01-01T00:00:20+0000 INFO (uvicorn): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
 In a separate terminal, call the service via `make test-local` which supplies the input data or if you are comfortable
@@ -258,6 +333,9 @@ You can also verify the build and view the web service is available by navigatin
 service creates if you are familiar with web APIs.
 
 <img src="openapi.png" width="400"/>
+
+> **Remember:** After making changes if you are testing in the container you will need to rebuild the container
+(explained in the previous step) before your changes will have effect.
 
 
 # Deployment
