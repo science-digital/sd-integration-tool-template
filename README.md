@@ -94,7 +94,6 @@ Library                  | Pydantic   |
 Dependency Management    | Poetry     |
 Build System             | Poetry     |
 Deployment               | Docker     |
-Test Framework           | Make (Todo Replace) |
 Infrastructure Framework | IVCAP      |
 
 
@@ -271,7 +270,7 @@ Make sure to kill the service from the first methodology you try (and verify its
 methodology so there is no confusion on how you are running the service.
 
 The following command will start the tool model as a server which listens for incoming requests which supply the input
-data:
+data: (choose one of Outside / Inside The Container, then continue with "Call The Service").
 
 **Outside The Container**
 ```
@@ -299,32 +298,39 @@ $ poetry ivcap docker-run -- --port 8080
 # 2025-01-01T00:00:20+0000 INFO (uvicorn): Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-In a separate terminal, call the service via `make test-local` which supplies the input data or if you are comfortable
-you can use your favourite http testing tool:
-_TODO: Replace this step. Remove the need for make as a dependency, replace with Python (since its already a dependency)._
-_For now you will also need to make sure that you have `make` installed as a dependency on your system._
+**Call The Service**
+In a separate terminal, call the service as follows (which supplies the input data from the file `tests/request.json`).
 ```
-$ make test-local
+$ python3 make_request.py http://localhost:8080 tests/request.json
 # Expect:
-# curl -i -X POST \
-#     -H "content-type: application/json" \
-#     --data @tests/request.json \
-#     http://localhost:8080
-# HTTP/1.1 200 OK
-# date: Tue, 22 Jul 2025 06:32:39 GMT
+# Request:
+# {
+#   "$schema": "urn:sd:schema.is-prime.request.1",
+#   "number": 997
+# }
+# ----------
+#
+# Responce Headers:
+# date: Wed, 01 Jan 2025 00:00:00 GMT
 # server: uvicorn
-# job-id: urn:ivcap:job:1f066c5a-a3b4-6f84-a5f7-9eae9cc90b25
+# job-id: urn:ivcap:job:00000000-0000-0000-0000-000000000000
 # content-length: 67
 # content-type: application/json
 # ivcap-ai-tool-version: 0.7.15
+# Connection: close
 #
+#
+# ----------
+#
+# Responce Data:
 # {"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
+# ----------
 ```
 
 The output from this command shows 3 things:
-- Shows the call that was made to the packaged tool (`curl ...`).
-- Shows the HTTP response we receive from the packaged tool (`HTTP...`).
-- Shows the data in the response we received from the packaged tool (that 997 is prime) (`{"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}`).
+- The data in the call that was made to the serivce (`Request`).
+- The HTTP response headers we receive from the packaged tool (`Responce Headers`).
+- The data in the response we received from the packaged tool (that 997 is prime) (`Responce Data`).
 
 You can also see the input data that was supplied which is in [tests/request.json](tests/request.json).
 
@@ -333,6 +339,24 @@ You can also verify the build and view the web service is available by navigatin
 service creates if you are familiar with web APIs.
 
 <img src="openapi.png" width="400"/>
+
+You may also want to use a standard tool on your system to make the requests. For instance shown here with `curl`:
+```
+$ curl -i -X POST \
+    -H "content-type: application/json" \
+    --data @tests/request.json \
+    http://localhost:8080
+# Expect:
+# HTTP/1.1 200 OK
+# date: Wed, 01 Jan 2025 00:00:00 GMT
+# server: uvicorn
+# job-id: urn:ivcap:job:00000000-0000-0000-0000-000000000000
+# content-length: 67
+# content-type: application/json
+# ivcap-ai-tool-version: 0.7.15
+#
+# {"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
+```
 
 > **Remember:** After making changes if you are testing in the container you will need to rebuild the container
 (explained in the previous step) before your changes will have effect.
