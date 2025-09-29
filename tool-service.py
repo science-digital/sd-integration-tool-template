@@ -8,8 +8,10 @@ from ivcap_ai_tool import start_tool_server, ToolOptions, ivcap_ai_tool, logging
 logging_init()
 logger = getLogger("app")
 
+
+#: Service details.
 service = Service(
-    name="AI tool to check for prime numbers",
+    name="A tool to check whether a number is prime",
     contact={
         "name": "Your Name",
         "email": "your.name@data61.csiro.au",
@@ -20,9 +22,10 @@ service = Service(
     },
 )
 
+#: Specify input value(s).
 class Request(BaseModel):
     jschema: str = Field("urn:sd:schema.is-prime.request.1", alias="$schema")
-    number: int = Field(description="the number to check if prime")
+    number: int = Field(description="The number to check as prime.")
 
     model_config = ConfigDict(json_schema_extra={
         "example": {
@@ -31,10 +34,11 @@ class Request(BaseModel):
         }
     })
 
+#: Specify result value(s).
 class Result(BaseModel):
     jschema: str = Field("urn:sd:schema.is-prime.1", alias="$schema")
-    number: int = Field(description="the number to check if prime")
-    is_prime: bool = Field(description="true if number is prime, false otherwise")
+    number: int = Field(description="The number that was checked as prime.")
+    is_prime: bool = Field(description="true if number is prime, false otherwise.")
 
     model_config = ConfigDict(json_schema_extra={
         "example": {
@@ -44,6 +48,7 @@ class Result(BaseModel):
         }
     })
 
+#: API Functionality
 @ivcap_ai_tool("/", opts=ToolOptions(tags=["Prime Checker"]))
 def is_prime(req: Request, jobCtxt: JobContext) -> Result:
     """
@@ -66,6 +71,7 @@ def is_prime(req: Request, jobCtxt: JobContext) -> Result:
 
     jobCtxt.report.step_finished("main", f"Is '{number}' a prime? {is_prime}")
     return Result(number=number, is_prime=is_prime)
+
 
 if __name__ == "__main__":
     start_tool_server(service)
