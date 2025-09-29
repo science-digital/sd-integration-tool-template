@@ -25,8 +25,10 @@ within the Sciansa ecosystem. Higher level modular design principles can be foun
 
 # Beginners
 
-If you are just starting out it is recommended that you use this repo as a template to guide your development. This repo
-is a GitHub template __TODO explain how to use GitHub template.__
+If you are just starting out it is recommended that you use this repository as a template to guide your development.
+This repository is a GitHub template that you can use as the starting point for your new integration (copying in the
+working example as the starting point for your new integration). On GitHub you can select "Use this template" ->
+"Create a new repository", which will create a new repository with all of the files copied in from this repository.
 
 This guide targets developers who want to integrate classical tools with well defined inputs and outputs. If you want to
 support an agent interaction pattern see the
