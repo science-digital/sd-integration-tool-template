@@ -88,18 +88,18 @@ Type                     | Technology |
 -------------------------|------------|
 Source Code Management   | Git        |
 Language                 | Python     |
-Library                  | Pydantic   |
 Dependency Management    | Poetry     |
 Build System             | Poetry     |
 Deployment               | Docker     |
 Infrastructure Framework | IVCAP      |
+Library                  | Pydantic   |
 
 
 IVCAP is the backend infrastructure that all Sciansa modules run on. If you have some familiarity with cloud
 infrastructure, IVCAP is a technology abstraction over the native cloud intrusted.
 
 If you are not familiar with IVCAP the best brief introduction can be found in the IVCAP section of the [Sciansa
-Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP).
+Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP-quick-start).
 
 
 # Local Development and Testing
@@ -180,9 +180,9 @@ replace the logic with your own.
 
 ## Local Testing:
 
-We use docker to manage dependencies during deployment. A Docker image packages the code and its dependencies up into
-a light weight virtual machine like environment. This is the package that is pushed to the Sciansa platform and used to
-run your code on the IVCAP infrastructure.
+We use docker to manage dependencies during deployment to the Sciansa platform. A Docker image packages the code and its
+dependencies into a light weight virtual machine like environment. This is the package that is pushed to the Sciansa
+platform and used to run your code on the IVCAP infrastructure.
 
 There are 2 ways you can run your service locally for development and testing:
 - [Inside the container](#inside-the-containder)
