@@ -248,17 +248,17 @@ developers. Every step should be straight forward without requiring you to spend
 or work around any issues.
 
 
-## Build the Template:
+## Install Template Specific Dependencies and Build:
 
-We start by building the template "as is". This packages the code and dependencies into a docker image. The docker image
-can be used to run the code with its dependencies both on your local machine and also from the Sciansa IVCAP
-infrastructure.
+We start by using/building the template "as is".
 
-Note: It is only necessary to build the container when you want to test locally inside the container (the container
-will also be built automatically as part of the deployment process). We explain this step up front so that we can
-explain local testing in and outside of the container in parallel to simplify the description.
+This section covers installing the template specific dependencies. The process looks a little different depending on
+whether you are installing the dependencies for the "inside" or "outside" the container scenario.
 
-- Install Template Specific Build Dependencies:
+- Install Template Specific Dependencies:
+  - The following is only needed for running the service in the "outside the container" configuration and creates a
+    virtual environment with the necessary dependencies. You only need to do this once or if you have updated your
+    dependencies (in (pyproject.toml)).
 ```
 $ poetry install --no-root
 # Expect:
@@ -268,7 +268,15 @@ $ poetry install --no-root
 #
 # - Installing ...
 ```
-- Build:
+
+- Build Docker image:
+  - This is only needed for testing in the "inside the container" configuration. This needs to be done every time you
+    either update the code or update your dependencies.
+  - This packages the code and dependencies into a docker image. The docker image can be used to run the code with its
+    dependencies both on your local machine and also from the Sciansa IVCAP infrastructure.
+  - Note: It is only necessary to build the container when you want to test locally inside the container (the container
+          will also be built automatically as part of the deployment process). We explain this step up front so that we
+          can explain local testing in and outside of the container in parallel to simplify the description.
 ```
 $ poetry ivcap docker-build
 # Expect:
