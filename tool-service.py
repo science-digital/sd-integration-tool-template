@@ -22,6 +22,7 @@ service = Service(
     },
 )
 
+
 # Specify input value(s).
 class Request(BaseModel):
     # A unique schema identifier for this data format.
@@ -36,6 +37,7 @@ class Request(BaseModel):
             "number": 997
         }
     })
+
 
 # Specify result value(s).
 class Result(BaseModel):
@@ -53,6 +55,7 @@ class Result(BaseModel):
             "is_prime": True
         }
     })
+
 
 # API Functionality.
 @ivcap_ai_tool("/", opts=ToolOptions(tags=["Prime Checker"]))
