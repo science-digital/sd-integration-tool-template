@@ -80,8 +80,6 @@ Also, please make update this list to reflect the additional constraints that ma
 
 # Technologies
 
-These are the technologies that you will need to use to integrate your tool into Sciansa:
-
 The following matrix defines the technologies you will need to use to integrate your tool. If you are starting from
 scratch it is recommended that you use the default options. If you are integrating an existing tool the matrix
 highlights compatibility.
@@ -107,8 +105,8 @@ Developer Documentation](https://github.com/csiro-internal/sciansa-integration#I
 # Local Development and Testing
 
 We start by building the template "as is" to verify the development environment and start in a known good working state.
-Once you understand how to build, deploy and interact (provide inputs and retrieve outputs - both locally and on the
-deployed instance) you can progressively customise the template with your functionality.
+Once you understand how to build, deploy and interact with the service (provide inputs and retrieve outputs - both
+locally and on the deployed instance) you can progressively customise the template with your functionality.
 
 
 ## Install Development Dependencies:
@@ -183,7 +181,7 @@ replace the logic with your own.
 ## Local Testing:
 
 We use docker to manage dependencies during deployment. A Docker image packages the code and its dependencies up into
-a light wieght virtual machine like environment. This is that package that is pushed to the Sciansa platform and used to
+a light wieght virtual machine like environment. This is the package that is pushed to the Sciansa platform and used to
 run your code on the IVCAP infrustructure.
 
 There are 2 ways you can run your service locally for development and testing:
@@ -202,7 +200,7 @@ harder to inspect the running code and see output messages.
 
 ### Outside the container
 
-It is also possible to test the module locally outside the container (directly on your system). In this case you must
+It is also possible to test your module locally outside the container (directly on your system). In this case you must
 have the dependencies installed (in a virtual environment) directly on your system. From a development testing
 perspective the disadvantage of testing outside the container is:
 - Environment may not be represenative of the final target environment. This is important for both checking that
@@ -225,6 +223,11 @@ you start from a known good working state. Once you have:
 - Built and tested locally (inside the container).
 - Deployed and tested remotely on the Sciansa/IVCAP platform.
 you can the progressively update the template to import your functionality (testing incrementally as you go).
+
+If you do run into any issues building and testing the template as-is please do report them as it either indicates an
+issue in the clarity of the docs or in the template its self, both of which are important that we fix for future
+developers. Every step should be straight forward without requiring you to spend time interpreting the istructions
+or work around any issues.
 
 
 ## Build the Template:
