@@ -193,10 +193,10 @@ There are 2 ways you can run your service locally for development and testing:
 Testing your functionality inside the container has the advantage that it will run with the same environment that it
 will run on the Sciansa platform. From a development testing perspective the disadvantage of testing using the
 container is:
-- Longer build times. Meaning there is an increased lag when rapidly making changes. (The container needs to rebuilt
-each time you make updates.)
+- Longer build times. Meaning there is an increased lag (between development and testing) when rapidly making changes.
+(The container needs to rebuilt each time you make updates.)
 - More opaque errors. Because the code is hosted in the container one step removed from the local environment it is
-harder to inspect the running code and see output messages.
+harder to inspect the running code and see output messages or errors.
 
 ### Outside the container
 
@@ -217,14 +217,14 @@ The recommended approach to development / testing is:
 6. Deploy remotely and test.
 
 The following sections will help you to understand how you can test locally both in and outside the container and then
-to deploy the container. It is recommended that you build and deploy the repository "as is" in the first instance so that
-you start from a known good working state. Once you have:
+to deploy the container. It is recommended that you build and deploy the repository "as is" in the first instance so
+that you start from a known good working state. Once you have:
 - Built and tested locally (outside the container).
 - Built and tested locally (inside the container).
 - Deployed and tested remotely on the Sciansa/IVCAP platform.
 you can the progressively update the template to import your functionality (testing incrementally as you go).
 
-If you do run into any issues building and testing the template "as is" please do report them as it either indicates an
+If you do run into any issues building and testing the template "as is" please do report them, as it either indicates an
 issue in the clarity of the docs or in the template its self, both of which are important that we fix for future
 developers. Every step should be straight forward without requiring you to spend time interpreting the instructions
 or work around any issues.
@@ -268,12 +268,13 @@ inspecting the result.
 As discussed in the [Local Testing Section](#local-testing) we have the option of running the service either inside or
 outside the container. The steps and the process for testing the service inside or outside the container remain the
 same with the only change being how you invoke the service initially. It is suggested that you run through this section
-2 times, once trying out the "outside the container methodology" and then repeating with the "inside the container".
-Make sure to kill the service from the first methodology you try (and verify its not running) before you try the other
-methodology so there is no confusion on how you are running the service.
+2 times, once trying out the "outside the container" methodology and then repeating with the "inside the container"
+methodology. Make sure to kill the service from the first methodology you try (and verify its not running - try
+submitting a request once it is down and expect failure) before you try the other methodology so there is no confusion
+on how you are running the service.
 
 The following command will start the tool model as a server which listens for incoming requests which supply the input
-data: (choose one of Outside / Inside The Container, then continue with "Call The Service").
+data: (choose one of Outside / Inside The Container, then continue with "Call The Service")
 
 **Outside The Container**
 ```
@@ -432,7 +433,7 @@ $ poetry ivcap job-exec tests/request.json
 
 The input data that is supplied to the tool is in `tests/request.json`.
 
-The output from this command shows 3 things:
+The output from this command shows 2 things:
 - A job was created - that is the tool was scheduled to be run (`Creating job...`).
 - Shows the data in the response we received from the packaged tool (matches the data from the local run).
 
@@ -458,8 +459,8 @@ supply to your tool. This is a Pydantic data structure you can see the Pydantic 
 
 ### [tool-service.py](./tool-service.py)
 
-Implements a simple http based service which provides a `POST /` service endpoint to test
-if the number contained in the request is a prime number or not.
+Implements a simple HTTP based service which provides a `POST /` service endpoint to test if the number contained in the
+request is a prime number or not.
 
 We first import a few library functions and configure the logging system to use a more "machine" friendly format to
 simplify service monitoring on the platform.
@@ -495,12 +496,12 @@ service = Service(
 The core function of the tool itself is accessible as `POST /`. The service signature should be kept as simple as
 possible.
 We highly recommend defining the input as well as the result by a single `pydantic` model, respectively.
-However, for a tool to be properly used by an Agent, we should provide a
-comprehensive function documentation including the required parameters as well as the reply.
+However, for a tool to be properly used by an Agent, we should provide a comprehensive function documentation including
+the required parameters as well as the reply.
 
-Please also note the `@ivcap_ai_tool` decorator. It exposes the service via `POST \`, but also a `GET /`
-to allow the platform to obtain the tool description which can be used by agents to select the right
-tool but also understand on how to use it.
+Please also note the `@ivcap_ai_tool` decorator. It exposes the service via `POST \`, but also a `GET /` to allow the
+platform to obtain the tool description which can be used by agents to select the right tool but also understand on how
+to use it.
 
 ```
 class Request(BaseModel):
@@ -520,9 +521,7 @@ def is_prime(req: Request) -> Result:
     return Result(flag=True)
 ```
 
-Finally, we need to start the server
-to listen for incoming requests:
-
+Finally, we need to start the server to listen for incoming requests:
 ```
 # Start server
 if __name__ == "__main__":
