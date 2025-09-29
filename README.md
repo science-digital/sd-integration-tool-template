@@ -3,6 +3,8 @@
 If you are new to development for Sciansa see https://github.com/csiro-internal/sciansa-integration for higher level
 topics.
 
+This repositiory focuses on integrating an existing tool that you want to make avilable from the Sciansa platform.
+
 This is the most basic beginner tutorial (akin to Hello World!). If you want a more advanced tutorial see the additional
 tutorials listed here https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading .
 
@@ -162,6 +164,22 @@ $ docker run hello-world
 
 > **Note:** You can also see [ivcap-cli](https://github.com/ivcap-works/ivcap-cli) repo for more details about the
 IVCAP CLI tool.
+
+
+## Python Code or External Application:
+
+This repository focuses on integrating functionality that you have implemented in Python. If instead you would like a
+template / example that implements functionality though an external application use this repositoy instead
+[https://github.com/csiro-internal/sd-integration-external-tool-template](https://github.com/csiro-internal/sd-integration-external-tool-template)
+all docs and steps otherwise remain the same.
+
+The following table highlighs which repository to use as the basis for your implementation. Either way you should use
+the Readme in this repo as the source of your docs.
+
+| Usecase | Where |
+|-|-|
+| Python code you want to import and call | This repository. |
+| External application or Script | [https://github.com/csiro-internal/sd-integration-external-tool-template](https://github.com/csiro-internal/sd-integration-external-tool-template) |
 
 
 ## Default Functionality:
@@ -443,6 +461,13 @@ in the [Gene Ontology (GO) Term Mapper](https://github.com/ivcap-works/gene-onol
 
 
 # Updating the Template
+
+This template focus on features that you have implemented in code. If you instead just want to call out to an external
+tool see https://github.com/csiro-internal/sd-integration-external-tool-template which centers around this usecase.
+
+You may also want to use your faviourite diff tool to examine the differences between tool-service.py in this repo and
+https://github.com/csiro-internal/sd-integration-external-tool-template as this will be instructive on the code you
+might need to modify when updating the template with your implementation.
 
 ## Overview
 
