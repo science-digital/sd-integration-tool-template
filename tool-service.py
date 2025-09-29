@@ -9,7 +9,7 @@ logging_init()
 logger = getLogger("app")
 
 
-#: Service details.
+# Service details.
 service = Service(
     name="A tool to check whether a number is prime",
     contact={
@@ -22,11 +22,14 @@ service = Service(
     },
 )
 
-#: Specify input value(s).
+# Specify input value(s).
 class Request(BaseModel):
+    # A unique schema identifier for this data format.
     jschema: str = Field("urn:sd:schema.is-prime.request.1", alias="$schema")
+    # An example input value.
     number: int = Field(description="The number to check as prime.")
 
+    # An example showing how to supply the input data.
     model_config = ConfigDict(json_schema_extra={
         "example": {
             "$schema": "urn:sd:schema.is-prime.request.1",
@@ -34,12 +37,15 @@ class Request(BaseModel):
         }
     })
 
-#: Specify result value(s).
+# Specify result value(s).
 class Result(BaseModel):
+    # A unique schema identifier for this data format.
     jschema: str = Field("urn:sd:schema.is-prime.1", alias="$schema")
+    # Two example result values.
     number: int = Field(description="The number that was checked as prime.")
     is_prime: bool = Field(description="true if number is prime, false otherwise.")
 
+    # An example showing what the result will look like.
     model_config = ConfigDict(json_schema_extra={
         "example": {
             "$schema": "urn:sd:schema.is-prime.1",
@@ -48,7 +54,7 @@ class Result(BaseModel):
         }
     })
 
-#: API Functionality
+# API Functionality.
 @ivcap_ai_tool("/", opts=ToolOptions(tags=["Prime Checker"]))
 def is_prime(req: Request, jobCtxt: JobContext) -> Result:
     """
