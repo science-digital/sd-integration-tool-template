@@ -95,8 +95,8 @@ Deployment               | Docker     |
 Infrastructure Framework | IVCAP      |
 
 
-IVCAP is the backend infrustructure that all Sciansa modules run on. If you have some familiarity with cloud
-infurstrucutre, IVCAP is a technology abstraction over the native cloud infrusture.
+IVCAP is the backend infrastructure that all Sciansa modules run on. If you have some familiarity with cloud
+infrastructure, IVCAP is a technology abstraction over the native cloud intrusted.
 
 If you are not familiar with IVCAP the best brief introduction can be found in the IVCAP section of the [Sciansa
 Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP).
@@ -181,14 +181,14 @@ replace the logic with your own.
 ## Local Testing:
 
 We use docker to manage dependencies during deployment. A Docker image packages the code and its dependencies up into
-a light wieght virtual machine like environment. This is the package that is pushed to the Sciansa platform and used to
-run your code on the IVCAP infrustructure.
+a light weight virtual machine like environment. This is the package that is pushed to the Sciansa platform and used to
+run your code on the IVCAP infrastructure.
 
 There are 2 ways you can run your service locally for development and testing:
 - [Inside the container](#inside-the-containder)
 - [Outside the container](#outside-the-containder)
 
-### Inside the containder
+### Inside the container
 
 Testing your functionality inside the container has the advantage that it will run with the same environment that it
 will run on the Sciansa platform. From a development testing perspective the disadvantage of testing using the
@@ -203,7 +203,7 @@ harder to inspect the running code and see output messages.
 It is also possible to test your module locally outside the container (directly on your system). In this case you must
 have the dependencies installed (in a virtual environment) directly on your system. From a development testing
 perspective the disadvantage of testing outside the container is:
-- Environment may not be represenative of the final target environment. This is important for both checking that
+- Environment may not be representative of the final target environment. This is important for both checking that
 dependencies are specified correctly and also the areas that your module interacts with the system environment.
 
 ### Recommended Development / Testing Methodology
@@ -217,16 +217,16 @@ The recommended approach to development / testing is:
 6. Deploy remotely and test.
 
 The following sections will help you to understand how you can test locally both in and outside the container and then
-to deploy the container. It is recomended that you build and deploy the reposity "as is" in the first instance so that
+to deploy the container. It is recommended that you build and deploy the repository "as is" in the first instance so that
 you start from a known good working state. Once you have:
 - Built and tested locally (outside the container).
 - Built and tested locally (inside the container).
 - Deployed and tested remotely on the Sciansa/IVCAP platform.
 you can the progressively update the template to import your functionality (testing incrementally as you go).
 
-If you do run into any issues building and testing the template as-is please do report them as it either indicates an
+If you do run into any issues building and testing the template "as is" please do report them as it either indicates an
 issue in the clarity of the docs or in the template its self, both of which are important that we fix for future
-developers. Every step should be straight forward without requiring you to spend time interpreting the istructions
+developers. Every step should be straight forward without requiring you to spend time interpreting the instructions
 or work around any issues.
 
 
@@ -234,11 +234,11 @@ or work around any issues.
 
 We start by building the template "as is". This packages the code and dependencies into a docker image. The docker image
 can be used to run the code with its dependencies both on your local machine and also from the Sciansa IVCAP
-infrustructure.
+infrastructure.
 
 Note: It is only necessary to build the container when you want to test locally inside the container (the container
 will also be built automatically as part of the deployment process). We explain this step up front so that we can
-explain local testing in and outside of the container in parralell to simplify the desciption.
+explain local testing in and outside of the container in parallel to simplify the description.
 
 - Install Template Specific Build Dependencies:
 ```
@@ -267,7 +267,7 @@ inspecting the result.
 
 As discussed in the [Local Testing Section](#local-testing) we have the option of running the service either inside or
 outside the container. The steps and the process for testing the service inside or outside the container remain the
-same with the only change being how you invoke the service intially. It is suggested that you run through this section
+same with the only change being how you invoke the service initially. It is suggested that you run through this section
 2 times, once trying out the "outside the container methodology" and then repeating with the "inside the container".
 Make sure to kill the service from the first methodology you try (and verify its not running) before you try the other
 methodology so there is no confusion on how you are running the service.
@@ -313,7 +313,7 @@ $ python3 make_request.py http://localhost:8080 tests/request.json
 # }
 # ----------
 #
-# Responce Headers:
+# Response Headers:
 # date: Wed, 01 Jan 2025 00:00:00 GMT
 # server: uvicorn
 # job-id: urn:ivcap:job:00000000-0000-0000-0000-000000000000
@@ -325,15 +325,15 @@ $ python3 make_request.py http://localhost:8080 tests/request.json
 #
 # ----------
 #
-# Responce Data:
+# Response Data:
 # {"$schema":"urn:sd:schema.is-prime.1","number":997,"is_prime":true}
 # ----------
 ```
 
 The output from this command shows 3 things:
-- The data in the call that was made to the serivce (`Request`).
-- The HTTP response headers we receive from the packaged tool (`Responce Headers`).
-- The data in the response we received from the packaged tool (that 997 is prime) (`Responce Data`).
+- The data in the call that was made to the service (`Request`).
+- The HTTP response headers we receive from the packaged tool (`Response Headers`).
+- The data in the response we received from the packaged tool (that 997 is prime) (`Response Data`).
 
 You can also see the input data that was supplied which is in [tests/request.json](tests/request.json).
 

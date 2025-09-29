@@ -21,10 +21,10 @@ def request(url: str, input_data_filename:str) -> None:
     headers = {"content-type": "application/json"}
     request = Request(url, data=input.encode(), headers=headers)
     with urlopen(request) as response:
-        print("Responce Headers: ")
+        print("Response Headers: ")
         print(response.headers, section_separator)
 
-        print("Responce Data:")
+        print("Response Data:")
         print(response.read().decode(), section_separator)
 
 
