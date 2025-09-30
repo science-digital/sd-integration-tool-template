@@ -100,7 +100,7 @@ Library                  | Pydantic   |
 
 
 IVCAP is the backend infrastructure that all Sciansa modules run on. If you have some familiarity with cloud
-infrastructure, IVCAP is a technology abstraction over the native cloud intrusted.
+infrastructure, IVCAP is a technology abstraction over the native cloud infrastructure.
 
 If you are not familiar with IVCAP the best brief introduction can be found in the IVCAP section of the [Sciansa
 Developer Documentation](https://github.com/csiro-internal/sciansa-integration#IVCAP-quick-start).
@@ -181,7 +181,7 @@ the Readme in this repo as the source of your docs.
 | Usecase | Where |
 |-|-|
 | Python code you want to import and call | This repository. |
-| External application or Script | [https://github.com/csiro-internal/sd-integration-external-tool-template](https://github.com/csiro-internal/sd-integration-external-tool-template) |
+| External application or script | [https://github.com/csiro-internal/sd-integration-external-tool-template](https://github.com/csiro-internal/sd-integration-external-tool-template) |
 
 
 ## Default Functionality:
@@ -241,7 +241,7 @@ to deploy the container. It is recommended that you build and deploy the reposit
 that you start from a known good working state. Once you have:
 - Built and tested locally (outside the container).
 - Built and tested locally (inside the container).
-- Deployed and tested remotely on the Sciansa/IVCAP platform.
+- Deployed and tested remotely on the Sciansa/IVCAP platform. \
 you can the progressively update the template to import your functionality (testing incrementally as you go).
 
 If you do run into any issues building and testing the template "as is" please do report them, as it either indicates an
