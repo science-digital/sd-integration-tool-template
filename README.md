@@ -8,8 +8,8 @@ This repositiory focuses on integrating an existing tool that you want to make a
 This is the most basic beginner tutorial (akin to Hello World!). If you want a more advanced tutorial see the additional
 tutorials listed here https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#further-reading .
 
-This document is currently in the process of being updated. If needed you can revert to the original version by jumping
-to https://github.com/ivcap-works/ivcap-python-ai-tool-template.
+Particularly note the [Common Issues](#common-issues) section of this document. It provides a searchable set of issues
+that people typically run into when they are trying this tutorial for the first time.
 
 **Quick Start:** Jump straight to [Local Development and Testing](#local-development-and-testing).
 
@@ -576,6 +576,21 @@ Great you have completed the introductory tutorial. You may now want to look at 
 - [Advanced tool tutorial](https://github.com/ivcap-works/gene-onology-term-mapper)
 - [Example Integrations](https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations)
 
+
+# Common Issues
+
+TODO: List common issues that people run into here and what the cause of the issue is. The aim here is to have a list of
+error keywords that people can search for if they happen to hit the same error.
+
+## Brief Example Error Name
+```
+Error
+```
+
+**Cause and Fix**
+```
+$ echo "Hello World!"
+```
 
 # Maintainers Notes
 
