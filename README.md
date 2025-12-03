@@ -572,7 +572,9 @@ to this file.
 
 # Next Steps
 
-Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See either:
+Great you have completed the introductory tutorial. You may now want to look at a more advanced tutorial. See:
+- [Beyond Basics](https://github.com/csiro-internal/sciansa-integration/blob/main/ExternalToolBeyondBasics.md):
+Introduces some topics you might need when you want to integrate real tools.
 - [Advanced tool tutorial](https://github.com/ivcap-works/gene-onology-term-mapper)
 - [Example Integrations](https://github.com/csiro-internal/sciansa-integration?tab=readme-ov-file#example-integrations)
 
